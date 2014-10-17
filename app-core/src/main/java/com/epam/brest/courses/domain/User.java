@@ -10,23 +10,28 @@ public class User
 	{
 		return userId;
 	}
-	public String getLogin()
+
+    public void setUserId(long userId)
+    {
+        this.userId = userId;
+    }
+
+    public String getLogin()
 	{
 		return login;
 	}
-	public String getUserName()
+
+    public void setLogin(String login)
+    {
+        this.login = login;
+    }
+
+    public String getUserName()
 	{
 		return userName;
 	}
-	public void setUserId(long userId)
-	{
-		this.userId = userId;
-	}
-	public void setLogin(String login)
-	{
-		this.login = login;
-	}
-	public void setUserId(String userName)
+
+    public void setUserName(String userName)
 	{
 		this.userName = userName;
 	}
