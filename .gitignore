@@ -1,0 +1,4 @@
+*.jar
+*.properties
+*.class
+target/
