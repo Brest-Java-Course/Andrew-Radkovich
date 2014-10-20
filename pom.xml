@@ -8,6 +8,7 @@
 
 	<modules>
 		<module>app-core</module>
+        <module>app-dao</module>
 	</modules>
 	
 	<properties>
@@ -16,6 +17,16 @@
 
 	<dependencyManagement>
 		<dependencies>
+            <dependency>
+                <groupId>com.epam.brest.courses</groupId>
+                <artifactId>app-core</artifactId>
+                <version>1.0.0-SNAPSHOST</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest.courses</groupId>
+                <artifactId>app-dao</artifactId>
+                <version>1.0.0-SNAPSHOST</version>
+            </dependency>
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>

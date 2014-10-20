@@ -1,0 +1,30 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>app-dao</artifactId>
+    <packaging>jar</packaging>
+
+    <parent>
+        <groupId>com.epam.brest.courses</groupId>
+        <version>1.0.0-SNAPSHOST</version>
+        <artifactId>sampleusermanagment</artifactId>
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.epam.brest.courses</groupId>
+            <artifactId>app-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>
