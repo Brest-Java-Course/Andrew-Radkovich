@@ -8,4 +8,6 @@ public interface UserDao {
     public List<User> getUsers();
     public void removeUser(long UserId);
     public void addUser(User user);
+    public User getUserById(long userId);
+    public User getUserByLogin(String login);
 }

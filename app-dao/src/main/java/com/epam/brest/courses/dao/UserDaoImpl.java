@@ -9,9 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Created by andrew on 20.10.14.
- */
 public class UserDaoImpl implements UserDao {
     private JdbcTemplate jdbcTemplate;
 
@@ -32,17 +29,26 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> getUsers(){
-        //return null;
-        return jdbcTemplate.query("select userId, login, name from USER", new UserMapper());
+        return jdbcTemplate.query("SELECT userId, login, name FROM USER", new UserMapper());
     }
 
     @Override
-    public void removeUser(long UserId) {
-
+    public void removeUser(long userId) {
+        jdbcTemplate.update("DELETE FROM USER WHERE userId=?", userId);
     }
 
     @Override
     public void addUser(User user) {
         jdbcTemplate.update("INSERT INTO USER  (userId, login, name) VALUES(?,?,?)", user.getUserId(), user.getLogin(), user.getUserName());
+    }
+
+    @Override
+    public User getUserById(long userId){
+        return jdbcTemplate.queryForObject("SELECT userId, login, name FROM USER WHERE userId=?", new Object[]{userId}, new UserMapper());
+    }
+
+    @Override
+    public User getUserByLogin(String login) {
+        return jdbcTemplate.queryForObject("SELECT userId, login, name FROM USER WHERE login=?", new Object[]{login}, new UserMapper());
     }
 }

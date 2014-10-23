@@ -55,8 +55,16 @@
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-            <scope>test</scope>
+            <!--<scope>test</scope> -->
         </dependency>
     </dependencies>
+
+    <build>
+        <testResources>
+            <testResource>
+                <directory>src/test/resourses</directory>
+            </testResource>
+        </testResources>
+    </build>
 
 </project>
