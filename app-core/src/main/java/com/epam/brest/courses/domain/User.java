@@ -6,7 +6,16 @@ public class User
 	private String login;
 	private String userName;
 
-	public Long getUserId()
+    public User(Long userId, String login, String userName) {
+        this.userId = userId;
+        this.login = login;
+        this.userName = userName;
+    }
+
+    public User() {
+    }
+
+    public Long getUserId()
 	{
 		return userId;
 	}
