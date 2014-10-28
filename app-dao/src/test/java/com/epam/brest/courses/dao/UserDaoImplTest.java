@@ -14,16 +14,15 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by andrew on 22.10.14.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/testApplicationContextSpring.xml" })
+@ContextConfiguration(locations = { "classpath:/spring-dao-test.xml" })
 public class UserDaoImplTest {
 
     public static final String USER_NAME_3 = "userName3";
     public static final String USER_LOGIN_3 = "userLogin3";
     public static final String USER_LOGIN_2 = "userLogin2";
+    public static final String USER_NEW_LOGIN_2 = "newLogin2";
+    public static final String USER_NEW_NAME_2 = "newName2";
 
     @Autowired
     private UserDao userDao;
@@ -33,6 +32,7 @@ public class UserDaoImplTest {
         List<User> userDaoList = userDao.getUsers();
         assertNotNull(userDaoList);
     }
+
     @Test
     public void addUser(){
         List<User> users = userDao.getUsers();
@@ -68,5 +68,14 @@ public class UserDaoImplTest {
         User user = userDao.getUserByLogin(USER_LOGIN_2);
         assertNotNull(user);
         assertEquals(USER_LOGIN_2, user.getLogin());
+    }
+
+    @Test
+    public void updateUser(){
+        User userNew = new User(2L, USER_NEW_NAME_2, USER_NEW_LOGIN_2);
+        userDao.updateUser(userNew);
+        User user = userDao.getUserById(2L);
+        assertEquals(user.getLogin(), userNew.getLogin());
+        assertEquals(user.getUserName(), userNew.getUserName());
     }
 }

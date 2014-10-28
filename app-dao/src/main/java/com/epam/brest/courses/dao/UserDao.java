@@ -10,4 +10,5 @@ public interface UserDao {
     public void addUser(User user);
     public User getUserById(Long userId);
     public User getUserByLogin(String login);
+    public void updateUser(User user);
 }
