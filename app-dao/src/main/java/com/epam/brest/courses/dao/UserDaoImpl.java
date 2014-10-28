@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class UserDaoImpl implements UserDao {
 
@@ -27,6 +29,8 @@ public class UserDaoImpl implements UserDao {
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public class UserMapper implements RowMapper<User> {
 
@@ -53,26 +57,31 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void removeUser(Long userId) {
+        LOGGER.debug("Remove User: userId = " + userId);
         jdbcTemplate.update(DELETE_USER_SQL, userId);
     }
 
     @Override
     public void addUser(User user) {
+        LOGGER.debug("Add User = " + user.toString());
         jdbcTemplate.update(INSERT_USER_SQL, user.getUserId(), user.getLogin(), user.getUserName());
     }
 
     @Override
     public User getUserById(Long userId){
+        LOGGER.debug("Get User: userId = " + userId);
         return jdbcTemplate.queryForObject(SELECT_USER_BY_ID_SQL, new Object[]{userId}, new UserMapper());
     }
 
     @Override
     public User getUserByLogin(String login) {
+        LOGGER.debug("Get User: login = " + login);
         return jdbcTemplate.queryForObject(SELECT_USER_BY_LOGIN_SQL, new Object[]{login}, new UserMapper());
     }
 
     @Override
     public void updateUser(User user) {
+        LOGGER.debug("Update User = " + user.toString());
         Map<String, Object> parameters = new HashMap(3);
         parameters.put(USER_NAME, user.getUserName());
         parameters.put(USER_LOGIN, user.getLogin());
