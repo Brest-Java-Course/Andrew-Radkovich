@@ -20,6 +20,11 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/testApplicationContextSpring.xml" })
 public class UserDaoImplTest {
+
+    public static final String USER_NAME_3 = "userName3";
+    public static final String USER_LOGIN_3 = "userLogin3";
+    public static final String USER_LOGIN_2 = "userLogin2";
+
     @Autowired
     private UserDao userDao;
 
@@ -33,9 +38,9 @@ public class UserDaoImplTest {
         List<User> users = userDao.getUsers();
         int sizeBefore = users.size();
         User user = new User();
-        user.setUserId(3);
-        user.setUserName("name");
-        user.setLogin("login");
+        user.setUserId(3L);
+        user.setUserName(USER_NAME_3);
+        user.setLogin(USER_LOGIN_3);
         userDao.addUser(user);
 
         users = userDao.getUsers();
@@ -47,22 +52,21 @@ public class UserDaoImplTest {
     public void removeUser(){
         List<User> users = userDao.getUsers();
         int sizeBefore = users.size();
-        userDao.removeUser(1);
+        userDao.removeUser(1L);
 
         assertEquals(sizeBefore - 1, userDao.getUsers().size());
     }
 
     @Test
     public void getUserById(){
-        User user = userDao.getUserById(2);
+        User user = userDao.getUserById(2L);
         assertNotNull(user);
-        assertEquals(2, user.getUserId());
     }
 
     @Test
     public void getUserByLogin(){
-        User user = userDao.getUserByLogin("userLogin2");
+        User user = userDao.getUserByLogin(USER_LOGIN_2);
         assertNotNull(user);
-        assertEquals("userLogin2", user.getLogin());
+        assertEquals(USER_LOGIN_2, user.getLogin());
     }
 }

@@ -33,7 +33,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void removeUser(long userId) {
+    public void removeUser(Long userId) {
         jdbcTemplate.update("DELETE FROM USER WHERE userId=?", userId);
     }
 
@@ -43,7 +43,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUserById(long userId){
+    public User getUserById(Long userId){
         return jdbcTemplate.queryForObject("SELECT userId, login, name FROM USER WHERE userId=?", new Object[]{userId}, new UserMapper());
     }
 

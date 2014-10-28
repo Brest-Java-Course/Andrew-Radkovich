@@ -2,16 +2,16 @@ package com.epam.brest.courses.domain;
 
 public class User
 {
-	private long   userId;
+	private Long   userId;
 	private String login;
 	private String userName;
 
-	public long getUserId()
+	public Long getUserId()
 	{
 		return userId;
 	}
 
-    public void setUserId(long userId)
+    public void setUserId(Long userId)
     {
         this.userId = userId;
     }

@@ -7,7 +7,9 @@ import static org.junit.Assert.*;
 
 public class UserTest {
 
-    User user;
+    public static final String USER_NAME = "username";
+    public static final Long USER_ID = 1L;
+    private User user;
 
     @Before
     public void setUp() throws Exception {
@@ -16,14 +18,14 @@ public class UserTest {
 
     @Test
     public void testGetUserName() throws Exception {
-        user.setUserName("Lord Voldemort");
-        assertEquals("Lord Voldemort", user.getUserName());
+        user.setUserName(USER_NAME);
+        assertEquals(USER_NAME, user.getUserName());
     }
 
     @Test
     public void testGetUserId() throws Exception {
-        user.setUserId(1);
-        assertEquals(1, user.getUserId());
+        user.setUserId(USER_ID);
+        assertEquals(USER_ID , user.getUserId());
     }
 
     @Test
