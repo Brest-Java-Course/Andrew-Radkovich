@@ -6,6 +6,8 @@ import com.epam.brest.courses.domain.User;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.util.Assert;
 
 public class UserServiceImpl implements UserService{
     private static final Logger LOGGER = LogManager.getLogger(UserService.class);
@@ -23,30 +25,12 @@ public class UserServiceImpl implements UserService{
         this.userDao = userDao;
     }
 
-    private void checkUser(User user){
-        if ( null == user ){
-            LOGGER.debug(USER_IS_NULL);
-            throw new IllegalArgumentException(USER_IS_NULL);
-        }
-        else{
-            if ( null == user.getUserId() ){
-                LOGGER.debug(USER_ID_IS_NULL);
-                throw new IllegalArgumentException(USER_ID_IS_NULL);
-            }
-            if ( null == user.getLogin() ){
-                LOGGER.debug(USER_LOGIN_IS_NULL);
-                throw new IllegalArgumentException(USER_LOGIN_IS_NULL);
-            }
-            if ( null == user.getName() ){
-                LOGGER.debug(USER_NAME_IS_NULL);
-                throw new IllegalArgumentException(USER_NAME_IS_NULL);
-            }
-        }
-    }
-
     @Override
     public void addUser(User user) {
-        checkUser(user);
+        Assert.notNull(user);
+        Assert.isNull(user.getUserId());
+        Assert.notNull(user.getLogin(), "User login should be specified.");
+        Assert.notNull(user.getName(), "User name should be specified.");
         if ( null != userDao.getUserByLogin(user.getLogin())){
             LOGGER.debug(USER_ALREADY_EXISTS);
             throw new IllegalArgumentException(USER_ALREADY_EXISTS);
@@ -98,7 +82,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void updateUser(User user) {
-        checkUser( user );
         if ( null == userDao.getUserById(user.getUserId())){
             throw new IllegalArgumentException(USER_DOES_NOT_EXIST);
         }
