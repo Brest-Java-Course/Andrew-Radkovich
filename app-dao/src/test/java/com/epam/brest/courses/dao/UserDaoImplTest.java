@@ -23,6 +23,9 @@ public class UserDaoImplTest {
     public static final String USER_LOGIN_2 = "userLogin2";
     public static final String USER_NEW_LOGIN_2 = "newLogin2";
     public static final String USER_NEW_NAME_2 = "newName2";
+    public static final String USER_NEW_NAME_10 = "newName10";
+    public static final String USER_NEW_LOGIN_10 = "newName10";
+    public static final String USER_NEW_LOGIN_11 = "newName11";
 
     @Autowired
     private UserDao userDao;
@@ -77,5 +80,16 @@ public class UserDaoImplTest {
         User user = userDao.getUserById(2L);
         assertEquals(user.getLogin(), userNew.getLogin());
         assertEquals(user.getUserName(), userNew.getUserName());
+    }
+
+    @Test
+    public void getUsersByName(){
+        User user10 = new User(10L, USER_NEW_LOGIN_10, USER_NEW_NAME_10);
+        User user11 = new User(11L, USER_NEW_LOGIN_11, USER_NEW_NAME_10);
+        userDao.addUser(user10);
+        userDao.addUser(user11);
+        List<User> userList = userDao.getUsersByName(USER_NEW_NAME_10);
+        assertNotNull(userList);
+        assertEquals(2, userList.size());
     }
 }

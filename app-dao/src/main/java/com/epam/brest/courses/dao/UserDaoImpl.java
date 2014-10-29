@@ -26,6 +26,7 @@ public class UserDaoImpl implements UserDao {
     public static final String SELECT_USER_BY_ID_SQL = "SELECT userId, login, name FROM USER WHERE userId=?";
     public static final String SELECT_USER_BY_LOGIN_SQL = "SELECT userId, login, name FROM USER WHERE login=?";
     public static final String UPDATE_USER_SQL = "update USER set name = :name, login = :login where userId = :userId";
+    public static final String SELECT_USER_BY_NAME_SQL = "SELECT userId, login, name FROM USER WHERE name = :name";
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -88,4 +89,13 @@ public class UserDaoImpl implements UserDao {
         parameters.put(USER_ID, user.getUserId());
         namedParameterJdbcTemplate.update(UPDATE_USER_SQL, parameters);
     }
+
+    @Override
+    public List<User> getUsersByName(String name) {
+        Map<String, Object> parameters = new HashMap<String, Object>(1);
+        parameters.put(USER_NAME, name);
+        return namedParameterJdbcTemplate.query(SELECT_USER_BY_NAME_SQL, parameters, new UserMapper());
+    }
+
+
 }
