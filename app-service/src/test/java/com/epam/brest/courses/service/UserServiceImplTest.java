@@ -20,6 +20,7 @@ import static org.junit.Assert.assertFalse;
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 @Transactional
 public class UserServiceImplTest {
+
     @Autowired
     private UserService userService;
 
