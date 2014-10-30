@@ -4,6 +4,8 @@ import com.epam.brest.courses.domain.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.util.Assert;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -22,11 +24,13 @@ public class UserDaoImpl implements UserDao {
 
     public static final String SELECT_ALL_USERS_SQL = "SELECT userId, login, name FROM USER";
     public static final String DELETE_USER_SQL = "DELETE FROM USER WHERE userId=?";
-    public static final String INSERT_USER_SQL = "INSERT INTO USER  (userId, login, name) VALUES(?,?,?)";
+    @Value("#{T(org.apache.commons.io.FileUtils).readFileToString((new org.springframework.core.io.ClassPathResource('${insert_into_user_path}')).file)}")
     public static final String SELECT_USER_BY_ID_SQL = "SELECT userId, login, name FROM USER WHERE userId=?";
     public static final String SELECT_USER_BY_LOGIN_SQL = "SELECT userId, login, name FROM USER WHERE login=?";
     public static final String UPDATE_USER_SQL = "update USER set name = :name, login = :login where userId = :userId";
     public static final String SELECT_USER_BY_NAME_SQL = "SELECT userId, login, name FROM USER WHERE name = :name";
+
+    public String addNewUserSql;
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -63,7 +67,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void addUser(User user) {
         LOGGER.debug("Add User = " + user.toString());
-        jdbcTemplate.update(INSERT_USER_SQL, user.getUserId(), user.getLogin(), user.getUserName());
+        Assert.notNull(user);
+        Assert.isNull(user.getUserId());
+        Assert.notNull(user.getLogin(), "User login should be specified.");
+        Assert.notNull(user.getUserName(), "User name should be specified.");
+        jdbcTemplate.update(addNewUserSql, user.getUserId(), user.getLogin(), user.getUserName());
     }
 
     @Override

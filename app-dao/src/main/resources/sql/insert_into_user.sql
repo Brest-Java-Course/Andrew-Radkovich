@@ -1,0 +1,1 @@
+insert into USER (userId, login, name) values (:userId, :login, :name)

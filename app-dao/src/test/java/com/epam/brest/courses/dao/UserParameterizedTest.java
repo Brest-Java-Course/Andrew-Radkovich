@@ -1,4 +1,4 @@
-package com.epam.brest.courses.service;
+package com.epam.brest.courses.dao;
 
 import com.epam.brest.courses.domain.User;
 import org.junit.Before;
@@ -13,11 +13,11 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @RunWith(Parameterized.class)
-@ContextConfiguration(locations = {"classpath*:/spring-services-test.xml"})
+@ContextConfiguration(locations = {"classpath*:/spring-dao-test.xml"})
 public class UserParameterizedTest {
 
     @Autowired
-    private UserService userService;
+    private UserDao userDao;
 
     private User user;
 
@@ -33,7 +33,7 @@ public class UserParameterizedTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void test() {
-        userService.addUser(user);
+        userDao.addUser(user);
     }
 
     @Parameterized.Parameters
