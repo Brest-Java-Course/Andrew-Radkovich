@@ -35,8 +35,6 @@ public class UserDaoImpl implements UserDao {
 
     public class UserMapper implements RowMapper<User> {
 
-
-
         public User mapRow(ResultSet rs, int i) throws SQLException {
             User user = new User();
             user.setUserId(rs.getLong(USER_ID));

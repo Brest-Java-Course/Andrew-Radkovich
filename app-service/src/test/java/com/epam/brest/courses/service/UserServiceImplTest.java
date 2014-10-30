@@ -1,6 +1,7 @@
 package com.epam.brest.courses.service;
 
 import com.epam.brest.courses.domain.User;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,22 +13,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertFalse;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:/spring-service-test.xml"})
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
+@ContextConfiguration(locations = {"classpath*:/spring-services-test.xml"})
+@TransactionConfiguration(transactionManager="transactionManager", defaultRollback=false)
 @Transactional
 public class UserServiceImplTest {
+
+    public static final String ADMIN = "Admin";
 
     @Autowired
     private UserService userService;
 
-    public static final String ADMIN = "admin";
-
     @Before
     public void setUp() throws Exception {
+
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -35,53 +34,62 @@ public class UserServiceImplTest {
         userService.addUser(null);
     }
 
-
-/*    @Test(expected = IllegalArgumentException.class)
-    public void testAddUser() throws IllegalArgumentException {
-        userService.addUser(new User(20L, "login20", "name20"));
-    }
-
     @Test(expected = IllegalArgumentException.class)
-    public void testAddEmptyUser() throws IllegalArgumentException {
+    public void testAddEmptyUser() throws Exception {
         userService.addUser(new User());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testAddUserNullId() throws IllegalArgumentException {
-        userService.addUser(new User(null, "newLogin", "newName"));
+    public void testAddNotNullIdUser() throws Exception {
+        userService.addUser(new User(12L, "", ""));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testAddUserNullLogin() throws IllegalArgumentException {
-        userService.addUser(new User(21L, null, "newName"));
+    public void testAddUserWithSameLogin() throws Exception {
+        userService.addUser(new User(null, ADMIN, ADMIN));
+        userService.addUser(new User(null, ADMIN, ADMIN));
+    }
+
+    @Test
+    public void testAddUser() throws Exception {
+        userService.addUser(new User(null, ADMIN, ADMIN));
+        User user = userService.getUserByLogin(ADMIN);
+        Assert.assertEquals(ADMIN, user.getLogin());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testAddUserNullName() throws IllegalArgumentException {
-        userService.addUser(new User(21L, "newLogin", null));
+    public void testGetUserByNullId() throws Exception {
+        userService.getUserById(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetUserByEmptyLogin() throws Exception {
+        userService.getUserByLogin("");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetUserByNullLogin() throws Exception {
+        userService.getUserByLogin(null);
     }
 
     @Test
     public void testGetUsers() throws Exception {
-        List<User> users = userService.getAllUsers();
-        assertNotNull(users);
-        assertFalse(users.isEmpty());
+        List<User> userList = userService.getUsers();
+        Assert.assertNotNull(userList);
     }
 
-    @Test
-    public void testGetUserById() throws IllegalArgumentException {
-        userService.getUserById(21L);
+    @Test(expected = IllegalArgumentException.class)
+    public void testUpdateUserNullUser() throws Exception {
+        userService.updateUser(null);
     }
 
-    @Test
-    public void testGetUserByNullId() throws IllegalArgumentException {
-        userService.getUserById(null);
+    @Test(expected = IllegalArgumentException.class)
+    public void testUpdateUserAdminLogin() throws Exception {
+        userService.updateUser(new User(5L, ADMIN, ADMIN));
     }
 
-    @Test
-    public void testGetUserByZeroId() throws IllegalArgumentException {
-        userService.getUserById(0L);
+    @Test(expected = IllegalArgumentException.class)
+    public void testRemoveUserNullId() throws Exception {
+        userService.removeUser(null);
     }
-
-*/
 }

@@ -2,9 +2,6 @@ package com.epam.brest.courses.service;
 
 import com.epam.brest.courses.domain.User;
 
-/**
- * Created by mentee-42 on 27.10.14.
- */
 public class UserDataFixture {
 
     public static User getNewUser() {

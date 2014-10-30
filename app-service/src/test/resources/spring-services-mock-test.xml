@@ -11,5 +11,4 @@
     <bean id="userService" class="com.epam.brest.courses.service.UserServiceImpl">
         <property name="userDao" ref="userDao"/>
     </bean>
-
 </beans>

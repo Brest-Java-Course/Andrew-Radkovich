@@ -10,8 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertSame;
-
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/spring-services-mock-test.xml"})
@@ -84,17 +83,6 @@ public class UserServiceImplMockTest {
         User user = UserDataFixture.getNewUser();
 
         expect(userDao.getUserByLogin(user.getLogin())).andReturn(user);
-
-        replay(userDao);
-
-        userService.addUser(user);
-    }
-
-    @Test(expected = UnsupportedOperationException.class)
-    public void throwException() {
-        User user = UserDataFixture.getNewUser();
-
-        expect(userDao.getUserByLogin(user.getLogin())).andThrow(new UnsupportedOperationException());
 
         replay(userDao);
 

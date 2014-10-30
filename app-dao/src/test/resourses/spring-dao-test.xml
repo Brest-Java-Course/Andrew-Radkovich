@@ -22,5 +22,4 @@ http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
         <jdbc:script location="createTables.sql"/>
         <jdbc:script location="dataScript.sql"/>
     </jdbc:initialize-database>
-
 </beans>
