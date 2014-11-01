@@ -1,11 +1,13 @@
 package com.epam.brest.courses.dao;
 
 import com.epam.brest.courses.domain.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.util.Assert;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -13,95 +15,97 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
+/**
+ * Created by andrew on 22.10.14.
+ */
 public class UserDaoImpl implements UserDao {
 
-    public static final String USER_ID = "userId";
-    public static final String USER_LOGIN = "login";
-    public static final String USER_NAME = "name";
+    public static final String USER_ID  = "userId";
+    public static final String LOGIN    = "login";
+    public static final String NAME     = "name";
 
-    public static final String SELECT_ALL_USERS_SQL = "SELECT userId, login, name FROM USER";
-    public static final String DELETE_USER_SQL = "DELETE FROM USER WHERE userId=?";
     @Value("#{T(org.apache.commons.io.FileUtils).readFileToString((new org.springframework.core.io.ClassPathResource('${insert_into_user_path}')).file)}")
-    public static final String SELECT_USER_BY_ID_SQL = "SELECT userId, login, name FROM USER WHERE userId=?";
-    public static final String SELECT_USER_BY_LOGIN_SQL = "SELECT userId, login, name FROM USER WHERE login=?";
-    public static final String UPDATE_USER_SQL = "update USER set name = :name, login = :login where userId = :userId";
-    public static final String SELECT_USER_BY_NAME_SQL = "SELECT userId, login, name FROM USER WHERE name = :name";
-
     public String addNewUserSql;
-
-    private JdbcTemplate jdbcTemplate;
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    @Value("#{T(org.apache.commons.io.FileUtils).readFileToString((new org.springframework.core.io.ClassPathResource('${delete_user_path}')).file)}")
+    public String deleteUserSql;
+    @Value("#{T(org.apache.commons.io.FileUtils).readFileToString((new org.springframework.core.io.ClassPathResource('${update_user_path}')).file)}")
+    public String updateUserSql;
+    @Value("#{T(org.apache.commons.io.FileUtils).readFileToString((new org.springframework.core.io.ClassPathResource('${select_user_by_login_path}')).file)}")
+    public String selectUserByLoginSql;
+    @Value("#{T(org.apache.commons.io.FileUtils).readFileToString((new org.springframework.core.io.ClassPathResource('${select_user_by_id_path}')).file)}")
+    public String selectUserByIdSql;
+    @Value("#{T(org.apache.commons.io.FileUtils).readFileToString((new org.springframework.core.io.ClassPathResource('${select_all_users_path}')).file)}")
+    public String selectAllUsersSql;
 
     private static final Logger LOGGER = LogManager.getLogger();
+
+    private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate namedJdbcTemplate;
 
     public class UserMapper implements RowMapper<User> {
 
         public User mapRow(ResultSet rs, int i) throws SQLException {
             User user = new User();
             user.setUserId(rs.getLong(USER_ID));
-            user.setLogin(rs.getString(USER_LOGIN));
-            user.setUserName(rs.getString(USER_NAME));
+            user.setLogin(rs.getString(LOGIN));
+            user.setName(rs.getString(NAME));
             return user;
         }
     }
 
-    public void setDataSource(DataSource dataSource){
-        jdbcTemplate = new JdbcTemplate((javax.sql.DataSource) dataSource);
-        namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-    }
-
-    @Override
-    public List<User> getUsers(){
-        return jdbcTemplate.query(SELECT_ALL_USERS_SQL, new UserMapper());
-    }
-
-    @Override
-    public void removeUser(Long userId) {
-        LOGGER.debug("Remove User: userId = " + userId);
-        jdbcTemplate.update(DELETE_USER_SQL, userId);
+    public void setDataSource(DataSource dataSource) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     @Override
     public void addUser(User user) {
-        LOGGER.debug("Add User = " + user.toString());
+        LOGGER.debug("addUser({}) ", user);
         Assert.notNull(user);
         Assert.isNull(user.getUserId());
         Assert.notNull(user.getLogin(), "User login should be specified.");
-        Assert.notNull(user.getUserName(), "User name should be specified.");
-        jdbcTemplate.update(addNewUserSql, user.getUserId(), user.getLogin(), user.getUserName());
+        Assert.notNull(user.getName(), "User name should be specified.");
+        Map<String, Object> parameters = new HashMap(3);
+        parameters.put(NAME, user.getName());
+        parameters.put(LOGIN, user.getLogin());
+        parameters.put(USER_ID, user.getUserId());
+        namedJdbcTemplate.update(addNewUserSql, parameters);
     }
 
     @Override
-    public User getUserById(Long userId){
-        LOGGER.debug("Get User: userId = " + userId);
-        return jdbcTemplate.queryForObject(SELECT_USER_BY_ID_SQL, new Object[]{userId}, new UserMapper());
+    public List<User> getUsers() {
+        LOGGER.debug("get users()");
+        return jdbcTemplate.query(selectAllUsersSql, new UserMapper());
     }
+
+    @Override
+    public void removeUser(Long userId) {
+        LOGGER.debug("remove user(userId={}) ", userId);
+        jdbcTemplate.update(deleteUserSql, userId);
+    }
+
 
     @Override
     public User getUserByLogin(String login) {
-        LOGGER.debug("Get User: login = " + login);
-        return jdbcTemplate.queryForObject(SELECT_USER_BY_LOGIN_SQL, new Object[]{login}, new UserMapper());
+        LOGGER.debug("get user ny login(login={})", login);
+        return jdbcTemplate.queryForObject(selectUserByLoginSql, new String[]{login}, new UserMapper());
+    }
+
+    @Override
+    public User getUserById(long userId) {
+        LOGGER.debug("get user by Id(userId={})", userId);
+        return jdbcTemplate.queryForObject(selectUserByIdSql, new UserMapper(), userId);
     }
 
     @Override
     public void updateUser(User user) {
-        LOGGER.debug("Update User = " + user.toString());
+        LOGGER.debug("update user({}).. ", user);
+
         Map<String, Object> parameters = new HashMap(3);
-        parameters.put(USER_NAME, user.getUserName());
-        parameters.put(USER_LOGIN, user.getLogin());
+        parameters.put(NAME, user.getName());
+        parameters.put(LOGIN, user.getLogin());
         parameters.put(USER_ID, user.getUserId());
-        namedParameterJdbcTemplate.update(UPDATE_USER_SQL, parameters);
+        namedJdbcTemplate.update(updateUserSql, parameters);
     }
-
-    @Override
-    public List<User> getUsersByName(String name) {
-        Map<String, Object> parameters = new HashMap<String, Object>(1);
-        parameters.put(USER_NAME, name);
-        return namedParameterJdbcTemplate.query(SELECT_USER_BY_NAME_SQL, parameters, new UserMapper());
-    }
-
-
 }

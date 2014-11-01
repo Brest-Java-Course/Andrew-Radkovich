@@ -1,0 +1,1 @@
+select userId, login, name from USER

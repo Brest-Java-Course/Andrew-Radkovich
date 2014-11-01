@@ -21,11 +21,10 @@ public class UserDaoImplTest {
     public static final String USER_NAME_3 = "userName3";
     public static final String USER_LOGIN_3 = "userLogin3";
     public static final String USER_LOGIN_2 = "userLogin2";
-    public static final String USER_NEW_LOGIN_2 = "newLogin2";
-    public static final String USER_NEW_NAME_2 = "newName2";
-    public static final String USER_NEW_NAME_10 = "newName10";
-    public static final String USER_NEW_LOGIN_10 = "newName10";
-    public static final String USER_NEW_LOGIN_11 = "newName11";
+    public static final String USER_NAME_10 = "Name10";
+    public static final String USER_LOGIN_10 = "Login10";
+    public static final String USER_LOGIN_11 = "Name11";
+    public static final String NEW_USER_LOGIN_11 = "NewName11";
 
     @Autowired
     private UserDao userDao;
@@ -41,8 +40,7 @@ public class UserDaoImplTest {
         List<User> users = userDao.getUsers();
         int sizeBefore = users.size();
         User user = new User();
-        //user.setUserId(3L);
-        user.setUserName(USER_NAME_3);
+        user.setName(USER_NAME_3);
         user.setLogin(USER_LOGIN_3);
         userDao.addUser(user);
 
@@ -62,34 +60,45 @@ public class UserDaoImplTest {
 
     @Test
     public void getUserById(){
+        User newUser = new User();
+        newUser.setLogin(USER_LOGIN_2);
+        newUser.setName(USER_LOGIN_2);
+        userDao.addUser(newUser);
         User user = userDao.getUserById(2L);
         assertNotNull(user);
     }
 
     @Test
-    public void getUserByLogin(){
-        User user = userDao.getUserByLogin(USER_LOGIN_2);
+    public void getUserByLogin() {
+
+        User newUser = new User();
+        newUser.setName(USER_NAME_10);
+        newUser.setLogin(USER_LOGIN_10);
+
+        userDao.addUser(newUser);
+
+        User user = userDao.getUserByLogin(USER_LOGIN_10);
         assertNotNull(user);
-        assertEquals(USER_LOGIN_2, user.getLogin());
+        assertEquals(USER_LOGIN_10, user.getLogin());
     }
 
     @Test
-    public void updateUser(){
-        User userNew = new User(2L, USER_NEW_NAME_2, USER_NEW_LOGIN_2);
-        userDao.updateUser(userNew);
-        User user = userDao.getUserById(2L);
-        assertEquals(user.getLogin(), userNew.getLogin());
-        assertEquals(user.getUserName(), userNew.getUserName());
-    }
+    public void updateUser() {
 
-    @Test
-    public void getUsersByName(){
-        User user10 = new User(10L, USER_NEW_LOGIN_10, USER_NEW_NAME_10);
-        User user11 = new User(11L, USER_NEW_LOGIN_11, USER_NEW_NAME_10);
-        userDao.addUser(user10);
-        userDao.addUser(user11);
-        List<User> userList = userDao.getUsersByName(USER_NEW_NAME_10);
-        assertNotNull(userList);
-        assertEquals(2, userList.size());
+        User user = new User();
+        user.setName(USER_LOGIN_11);
+        user.setLogin(USER_LOGIN_11);
+        userDao.addUser(user);
+
+        Long id = userDao.getUserByLogin(USER_LOGIN_11).getUserId();
+
+        User newUser = new User(id, NEW_USER_LOGIN_11, NEW_USER_LOGIN_11);
+
+        userDao.updateUser(newUser);
+
+        user = userDao.getUserById(newUser.getUserId());
+        assertEquals(user.getUserId(), newUser.getUserId());
+        assertEquals(user.getLogin(), newUser.getLogin());
+        assertEquals(user.getName(), newUser.getName());
     }
 }

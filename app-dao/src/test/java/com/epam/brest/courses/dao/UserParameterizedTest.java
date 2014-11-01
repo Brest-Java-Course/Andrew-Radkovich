@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @RunWith(Parameterized.class)
-@ContextConfiguration(locations = {"classpath*:/spring-dao-test.xml"})
+@ContextConfiguration(locations = {"classpath:/spring-dao-test.xml"})
 public class UserParameterizedTest {
 
     @Autowired

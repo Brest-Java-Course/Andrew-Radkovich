@@ -61,12 +61,4 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <testResources>
-            <testResource>
-                <directory>src/test/resourses</directory>
-            </testResource>
-        </testResources>
-    </build>
-
 </project>

@@ -12,6 +12,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = LogManager.getLogger();
+
     public static final String USER_ID_IS_NULL = "User Id is null";
     public static final String USER_LOGIN_IS_EMPTY = "User login is empty";
     public static final String NAME_IS_EMPTY_OR_NULL = "Name is empty or null";

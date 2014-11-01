@@ -18,8 +18,8 @@ public class UserTest {
 
     @Test
     public void testGetUserName() throws Exception {
-        user.setUserName(USER_NAME);
-        assertEquals(USER_NAME, user.getUserName());
+        user.setName(USER_NAME);
+        assertEquals(USER_NAME, user.getName());
     }
 
     @Test
