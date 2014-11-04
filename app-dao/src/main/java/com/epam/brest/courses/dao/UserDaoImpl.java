@@ -6,7 +6,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.util.Assert;
 
 import javax.sql.DataSource;
@@ -55,32 +58,41 @@ public class UserDaoImpl implements UserDao {
     }
 
     public void setDataSource(DataSource dataSource) {
+
         jdbcTemplate = new JdbcTemplate(dataSource);
         namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     @Override
-    public void addUser(User user) {
+    public Long addUser(User user) {
+
         LOGGER.debug("addUser({}) ", user);
         Assert.notNull(user);
         Assert.isNull(user.getUserId());
         Assert.notNull(user.getLogin(), "User login should be specified.");
         Assert.notNull(user.getName(), "User name should be specified.");
-        Map<String, Object> parameters = new HashMap(3);
-        parameters.put(NAME, user.getName());
-        parameters.put(LOGIN, user.getLogin());
-        parameters.put(USER_ID, user.getUserId());
-        namedJdbcTemplate.update(addNewUserSql, parameters);
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue(USER_ID, user.getUserId());
+        parameterSource.addValue(LOGIN, user.getLogin());
+        parameterSource.addValue(NAME, user.getName());
+
+        namedJdbcTemplate.update(addNewUserSql, parameterSource, keyHolder);
+
+        return keyHolder.getKey().longValue();
     }
 
     @Override
     public List<User> getUsers() {
+
         LOGGER.debug("get users()");
         return jdbcTemplate.query(selectAllUsersSql, new UserMapper());
     }
 
     @Override
     public void removeUser(Long userId) {
+
         LOGGER.debug("remove user(userId={}) ", userId);
         jdbcTemplate.update(deleteUserSql, userId);
     }
@@ -88,18 +100,21 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByLogin(String login) {
+
         LOGGER.debug("get user ny login(login={})", login);
         return jdbcTemplate.queryForObject(selectUserByLoginSql, new String[]{login}, new UserMapper());
     }
 
     @Override
     public User getUserById(long userId) {
+
         LOGGER.debug("get user by Id(userId={})", userId);
         return jdbcTemplate.queryForObject(selectUserByIdSql, new UserMapper(), userId);
     }
 
     @Override
     public void updateUser(User user) {
+
         LOGGER.debug("update user({}).. ", user);
 
         Map<String, Object> parameters = new HashMap(3);
