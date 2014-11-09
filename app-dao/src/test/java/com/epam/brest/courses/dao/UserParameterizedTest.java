@@ -45,5 +45,4 @@ public class UserParameterizedTest {
         };
         return Arrays.asList(params);
     }
-
 }

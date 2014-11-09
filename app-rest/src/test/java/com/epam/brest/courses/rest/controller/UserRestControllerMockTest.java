@@ -1,8 +1,8 @@
 package com.epam.brest.courses.rest.controller;
-
 import com.epam.brest.courses.domain.User;
-import com.epam.brest.courses.rest.UserRestController;
-import com.epam.brest.courses.rest.exeption.NotFoundException;
+import com.epam.brest.courses.rest.controller.UserRestController;
+import com.epam.brest.courses.rest.controller.VersionRestController;
+import com.epam.brest.courses.rest.controller.exception.NotFoundException;
 import com.epam.brest.courses.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
 /**
- * Created by andrew on 3.11.14.
+ * Created by andrew 3.11.14
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/spring-rest-mock-test.xml"})
@@ -46,6 +46,7 @@ public class UserRestControllerMockTest {
     @Autowired
     private UserService userService;
 
+
     @Before
     public void setUp() {
         this.mockMvc = standaloneSetup(userRestController)
@@ -54,7 +55,7 @@ public class UserRestControllerMockTest {
         expect(userService.getUsers()).andReturn(UserDataFixture.getSampleUserList());
         expect(userService.getUserById(1L)).andReturn(UserDataFixture.getExistUser(1L));
         expect(userService.getUserByLogin("user2")).andReturn(UserDataFixture.getExistUser(2L));
-        expect(userService.getUserById(5L)).andThrow(new NotFoundException("User not found, id = ", "5"));
+        expect(userService.getUserById(5L)).andThrow(new NotFoundException("User not found for id = ", "5"));
 
         expect(userService.addUser(UserDataFixture.getNewUser())).andReturn(Long.valueOf(1L));
 
@@ -68,26 +69,24 @@ public class UserRestControllerMockTest {
     @Test
     public void testSuite() throws Exception {
 
+        //addUserTest();
         getUsersTest();
         getUserByIdTest();
         getUserByLoginRestTest();
-        //addUserTest();
         getUserNotFoundTest();
         updateUserTest();
         deleteUserTest();
+
     }
 
-    private void getUserNotFoundTest() throws  Exception {
-
-        this.mockMvc.perform(
-                get("/user/5")
-                        .accept(MediaType.APPLICATION_JSON))
+    private void getUserNotFoundTest() throws Exception {
+        this.mockMvc.perform(get("/user/5")
+                .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
     private void getUserByLoginRestTest() throws Exception {
-
         this.mockMvc.perform(get("/users/login/user2")
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -96,10 +95,9 @@ public class UserRestControllerMockTest {
     }
 
     public void getUserByIdTest() throws Exception {
-
         this.mockMvc.perform(
                 get("/users/1")
-                .accept(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
         )
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -109,20 +107,19 @@ public class UserRestControllerMockTest {
     public void addUserTest() throws Exception {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String userJSON = objectMapper.writeValueAsString(UserDataFixture.getNewUser());
+        String userJson = objectMapper.writeValueAsString(UserDataFixture.getNewUser());
 
         this.mockMvc.perform(
                 post("/users")
-                .content(userJSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
+                        .content(userJson)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
         )
                 .andDo(print())
                 .andExpect(status().isCreated());
     }
 
     public void getUsersTest() throws Exception {
-
         this.mockMvc.perform(
                 get("/users")
                         .accept(MediaType.APPLICATION_JSON)
@@ -134,35 +131,34 @@ public class UserRestControllerMockTest {
                         "{\"userId\":3,\"login\":\"login3\",\"name\":\"name3\"}]"));
     }
 
+
     public void updateUserTest() throws Exception {
 
         ObjectMapper objectMapper = new ObjectMapper();
         User user = UserDataFixture.getExistUser(1L);
         user.setName("modified");
-        String userJSON = objectMapper.writeValueAsString(user);
+        String userJson = objectMapper.writeValueAsString(user);
 
-        ResultActions resultActions = this.mockMvc.perform(
+        ResultActions result = this.mockMvc.perform(
                 put("/users")
-                        .content(userJSON)
+                        .content(userJson)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-        )
-                .andDo(print());
-        resultActions.andExpect(status().isOk());
+        ).andDo(print());
+        result.andExpect(status().isOk());
     }
 
     public void deleteUserTest() throws Exception {
 
-        ResultActions resultActions = this.mockMvc.perform(
+        ResultActions result = this.mockMvc.perform(
                 delete("/users/1"))
                 .andDo(print());
-        resultActions.andExpect(status().isOk());
+        result.andExpect(status().isOk());
     }
 
     public static class UserDataFixture {
 
         public static User getNewUser() {
-
             User user = new User();
             user.setName("name");
             user.setLogin("login");
@@ -170,7 +166,6 @@ public class UserRestControllerMockTest {
         }
 
         public static User getNewUser(Long id) {
-
             User user = new User();
             user.setUserId(id);
             user.setName("name" + id);
@@ -178,8 +173,7 @@ public class UserRestControllerMockTest {
             return user;
         }
 
-        public static User getExistUser(Long id) {
-
+        public static User getExistUser(long id) {
             User user = new User();
             user.setUserId(id);
             user.setName("name" + id);
@@ -188,7 +182,6 @@ public class UserRestControllerMockTest {
         }
 
         public static List<User> getSampleUserList() {
-
             List list = new ArrayList(3);
             list.add(UserDataFixture.getNewUser(1L));
             list.add(UserDataFixture.getNewUser(2L));

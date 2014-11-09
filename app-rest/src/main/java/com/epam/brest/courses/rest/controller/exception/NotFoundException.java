@@ -1,9 +1,9 @@
-package com.epam.brest.courses.rest.exeption;
+package com.epam.brest.courses.rest.controller.exception;
 
 /**
- * Created by andrew on 4.11.14.
+ * Created by andrew 3.11.14
  */
-public class NotFoundException extends RuntimeException {
+public class NotFoundException extends RuntimeException{
 
     private String objectId;
 

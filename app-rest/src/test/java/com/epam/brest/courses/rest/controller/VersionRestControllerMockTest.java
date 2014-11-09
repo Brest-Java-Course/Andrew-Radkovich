@@ -1,6 +1,5 @@
 package com.epam.brest.courses.rest.controller;
 
-import com.epam.brest.courses.rest.VersionRestController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,14 +11,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.annotation.Resource;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
 /**
- * Created by andrew on 3.11.14.
+ * Created by andrew 3.11.14
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/spring-rest-mock-test.xml"})
@@ -37,12 +34,15 @@ public class VersionRestControllerMockTest {
     }
 
     @Test
-    public void gerRestApiVersionTest() throws Exception {
+    public void getRestApiVersionTest() throws Exception {
+
         this.mockMvc.perform(
-                get("/version", "Empty")
-                .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
+                get("/version","Empty")
+                .accept(MediaType.APPLICATION_JSON)
+        )
                 .andExpect(status().isOk())
                 .andExpect(content().string("\"1.0\""));
+
     }
+
 }

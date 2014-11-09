@@ -11,6 +11,7 @@
         <module>app-dao</module>
         <module>app-service</module>
         <module>app-rest</module>
+        <module>app-web</module>
     </modules>
 
     <properties>
@@ -88,7 +89,7 @@
                 <groupId>org.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
                 <version>2.3.1</version>
-                <scope>test</scope>
+             <!--   <scope>test</scope> -->
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
