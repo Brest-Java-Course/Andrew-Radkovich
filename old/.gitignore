@@ -1,9 +1,0 @@
-*.jar
-*.properties
-*.class
-target/
-.idea
-*.iml
-*.ipr
-*.iws
-.directory
