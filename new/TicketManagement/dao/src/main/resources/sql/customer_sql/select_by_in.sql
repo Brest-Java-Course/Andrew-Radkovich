@@ -1,0 +1,1 @@
+SELECT * FROM CUSTOMER WHERE identificationNumber=:identificationNumber;

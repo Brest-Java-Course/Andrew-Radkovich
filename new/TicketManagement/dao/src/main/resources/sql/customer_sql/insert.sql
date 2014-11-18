@@ -1,0 +1,1 @@
+INSERT INTO CUSTOMER (name, identificationNumber) VALUES (:name, :identificationNumber);

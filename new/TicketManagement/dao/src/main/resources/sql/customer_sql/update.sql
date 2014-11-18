@@ -1,0 +1,1 @@
+UPDATE CUSTOMER SET name=:name, identificationNumber=:identificationNumber WHERE customer_id=:customer_id;
