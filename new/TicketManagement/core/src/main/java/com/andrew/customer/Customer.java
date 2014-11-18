@@ -47,4 +47,27 @@ public class Customer {
 
         this.identificationNumber = identificationNumber;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if ( !(obj instanceof Customer) ) {
+            return false;
+        }
+
+        Customer customer = (Customer) obj;
+        return customerId.equals(customer.customerId) &&
+               name.equals(customer.name) &&
+               identificationNumber.equals(customer.identificationNumber);
+    }
+
+    @Override
+    public String toString() {
+
+        StringBuilder sb = new StringBuilder("Customer{");
+        sb.append("customerId=").append(customerId).append(", name='")
+          .append(name).append('\'').append(", identificationNumber='")
+          .append(identificationNumber).append('\'').append('}');
+        return sb.toString();
+    }
 }

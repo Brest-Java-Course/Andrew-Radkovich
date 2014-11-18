@@ -93,4 +93,36 @@ public class Ticket {
 
         this.customer = null;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if ( !(obj instanceof Ticket)) {
+            return false;
+        }
+
+        Ticket ticket = (Ticket) obj;
+        return ticketId.equals(ticket.ticketId) &&
+               cost.equals(ticket.cost) &&
+               location.equals(ticket.location) &&
+               date.equals(ticket.date) &&
+               title.equals(ticket.title) &&
+               taken == ticket.taken &&
+               customer.equals(ticket.customer);
+    }
+
+    @Override
+    public String toString() {
+
+        StringBuilder sb = new StringBuilder("Ticket{");
+        sb.append("ticketId=").append(ticketId)
+          .append(", cost=").append(cost)
+          .append(", location=").append(location)
+          .append(", date='").append(date).append('\'')
+          .append(", title='").append(title).append('\'')
+          .append(", taken=").append(taken)
+          .append(", customer=").append(customer.getCustomerId()).append('}');
+
+        return sb.toString();
+    }
 }
