@@ -13,6 +13,6 @@ public interface CustomerDao {
     public List<Customer> getCustomers();
     public void removeCustomer(Long id);
     public Customer getCustomerById(Long id);
-    public Customer getCustomerByIN(String identificationNumber);
+    public Customer getCustomerByNumber(String identificationNumber);
     public void updateCustomer(Customer customer);
 }

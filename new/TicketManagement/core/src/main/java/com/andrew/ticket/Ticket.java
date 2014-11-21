@@ -2,6 +2,8 @@ package com.andrew.ticket;
 
 import com.andrew.customer.Customer;
 
+import java.sql.Date;
+
 /**
  * Created by andrew on 15.11.14.
  */
@@ -10,24 +12,10 @@ public class Ticket {
     private Long ticketId;
     private Integer cost;
     private Integer location;
-    private String date;
+    private Date date;
     private String title;
     private boolean taken;
-    private Customer customer;
-
-    public boolean isTaken() {
-        return taken;
-    }
-
-    public void setTaken() {
-
-        taken = true;
-    }
-
-    public void setNotTaken() {
-
-        taken = false;
-    }
+    private Long customerId;
 
     public Long getTicketId() {
 
@@ -37,6 +25,14 @@ public class Ticket {
     public void setTicketId(Long ticketId) {
 
         this.ticketId = ticketId;
+    }
+
+    public boolean isTaken() {
+        return taken;
+    }
+
+    public void setTaken(boolean taken) {
+        this.taken = taken;
     }
 
     public Integer getCost() {
@@ -59,16 +55,6 @@ public class Ticket {
         this.location = location;
     }
 
-    public String getDate() {
-
-        return date;
-    }
-
-    public void setDate(String date) {
-
-        this.date = date;
-    }
-
     public String getTitle() {
 
         return title;
@@ -79,19 +65,29 @@ public class Ticket {
         this.title = title;
     }
 
-    public Customer getCustomer() {
+    public Date getDate() {
 
-        return customer;
+        return date;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setDate(Date date) {
 
-        this.customer = customer;
+        this.date = date;
+    }
+
+    public Long getCustomer() {
+
+        return customerId;
+    }
+
+    public void setCustomer(Long customerId) {
+
+        this.customerId = customerId;
     }
 
     public void deleteCustomer() {
 
-        this.customer = null;
+        this.customerId = null;
     }
 
     @Override
@@ -108,7 +104,7 @@ public class Ticket {
                date.equals(ticket.date) &&
                title.equals(ticket.title) &&
                taken == ticket.taken &&
-               customer.equals(ticket.customer);
+               customerId.equals(ticket.customerId);
     }
 
     @Override
@@ -121,7 +117,7 @@ public class Ticket {
           .append(", date='").append(date).append('\'')
           .append(", title='").append(title).append('\'')
           .append(", taken=").append(taken)
-          .append(", customer=").append(customer.getCustomerId()).append('}');
+          .append(", customer=").append(customerId).append('}');
 
         return sb.toString();
     }
