@@ -4,6 +4,7 @@ import com.andrew.customer.Customer;
 import com.andrew.dao.mapper.CustomerMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -43,6 +44,9 @@ public class CustomerDaoImpl implements CustomerDao{
     public String selectCustomerByNumberSql;
 
     private static final Logger LOGGER = LogManager.getLogger();
+
+    @Autowired
+    private DataSource dataSource;
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 

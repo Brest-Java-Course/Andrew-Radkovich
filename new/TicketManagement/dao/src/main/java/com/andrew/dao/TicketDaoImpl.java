@@ -2,22 +2,20 @@ package com.andrew.dao;
 
 import com.andrew.customer.Customer;
 import com.andrew.dao.mapper.CustomerMapper;
-import com.andrew.dao.mapper.SumMapper;
+import com.andrew.dao.mapper.TicketMapper;
 import com.andrew.ticket.Ticket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.util.Assert;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.sql.DataSource;
 import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +62,9 @@ public class TicketDaoImpl implements TicketDao {
     public String updateSetTakenTrueTicketSql;
 
     private static final Logger LOGGER = LogManager.getLogger();
+
+    @Autowired
+    private DataSource dataSource;
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -120,51 +121,90 @@ public class TicketDaoImpl implements TicketDao {
         LOGGER.debug("get tickets sum of customer = {}", customerId);
         Map<String, Object> parameters = new HashMap<String, Object>(1);
         parameters.put(CUSTOMER_ID, customerId);
-        return namedParameterJdbcTemplate.
+        return namedParameterJdbcTemplate.queryForLong(selectSumByCustomerIdSql, parameters);//??????
     }
 
     @Override
     public void updateTicket(Ticket ticket) {
 
+        LOGGER.debug("update whole ticket({})", ticket);
+        Map<String, Object> parameters = new HashMap<String, Object>(7);
+        parameters.put(TICKET_ID, ticket.getTicketId());
+        parameters.put(CUSTOMER_ID, ticket.getCustomerId());
+        parameters.put(TITLE, ticket.getTitle());
+        parameters.put(COST, ticket.getCost());
+        parameters.put(LOCATION, ticket.getLocation());
+        parameters.put(DATE, ticket.getDate());
+        parameters.put(TAKEN, ticket.isTaken());
+        namedParameterJdbcTemplate.update(updateTicketSql, parameters);
     }
 
     @Override
     public void updateSetTakenTrue(Long ticketId) {
 
+        LOGGER.debug("set taken true {}", ticketId);
+        Map<String, Long> parameter = new HashMap<String, Long>(1);
+        parameter.put(TICKET_ID, ticketId);
+        namedParameterJdbcTemplate.update(updateSetTakenTrueTicketSql, parameter);
     }
 
     @Override
     public void removeTicket(Long ticketId) {
 
+        LOGGER.debug("remove ticket {}", ticketId);
+        Map<String, Long> parameter = new HashMap<String, Long>(1);
+        parameter.put(TICKET_ID, ticketId);
+        namedParameterJdbcTemplate.update(removeTicketSql, parameter);
     }
 
     @Override
     public List<Ticket> selectNotTaken() {
-        return null;
+
+        LOGGER.debug("select not taken");
+        return namedParameterJdbcTemplate.query(selectAllNotTakenTicketsSql, new TicketMapper());
     }
 
     @Override
     public List<Ticket> selectAllTickets() {
-        return null;
+
+        LOGGER.debug("select all tickets");
+        return namedParameterJdbcTemplate.query(selectAllTicketsSql, new TicketMapper());
     }
 
     @Override
     public List<Ticket> selectNotTakenByDate(Date date) {
-        return null;
+
+        LOGGER.debug("select not taken by date={}", date);
+        Map<String, Date> parameter = new HashMap<String, Date>(1);
+        parameter.put(DATE, date);
+        return namedParameterJdbcTemplate.query(selectNotTakenByDateSql, parameter, new TicketMapper());
     }
 
     @Override
     public List<Ticket> selectNotTakenByDateAndTitle(Date date, String title) {
-        return null;
+
+        LOGGER.debug("select not taken by date={} and title={}", date, title);
+        Map<String, Object> parameters = new HashMap<String, Object>(2);
+        parameters.put(DATE, date);
+        parameters.put(TITLE, title);
+        return namedParameterJdbcTemplate.query(selectNotTakenByDateAndTitleSql, parameters, new TicketMapper());
     }
 
     @Override
     public List<Ticket> selectNotTakenByTitle(String title) {
-        return null;
+
+        LOGGER.debug("select not taken by title={}", title);
+        Map<String, String> parameter = new HashMap<String, String>(1);
+        parameter.put(TITLE, title);
+        return namedParameterJdbcTemplate.query(selectNotTakenByTitleSql, parameter, new TicketMapper());
     }
 
     @Override
     public List<Ticket> getTicketsOfCustomer(Long customerId) {
-        return null;
+
+        LOGGER.debug("select tickets of customer={}", customerId);
+        Map<String, Long> parameter = new HashMap<String, Long>(1);
+        parameter.put(CUSTOMER_ID, customerId);
+        return namedParameterJdbcTemplate.query(selectTicketsByCustomerIdSql, parameter, new TicketMapper());
     }
 }
