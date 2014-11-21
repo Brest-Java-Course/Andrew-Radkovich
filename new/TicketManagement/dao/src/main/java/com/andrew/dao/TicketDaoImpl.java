@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.sql.DataSource;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ public class TicketDaoImpl implements TicketDao {
     public static final String DATE = "data";
     public static final String TITLE = "title";
     public static final String TAKEN = "taken";
+    public static final String TOTAL_COST = "total_cost";
 
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${insert_into_ticket_path}')).inputStream)}")
     public String addTicketSql;
