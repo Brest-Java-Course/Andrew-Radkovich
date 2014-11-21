@@ -1,1 +1,1 @@
-SELECT c.customer_id, t.data, t.location, t.title, t.cost FROM CUSTOMER c JOIN TICKET t ON c.customer_id = t.customer_id WHERE data=:data;
+SELECT c.customer_id, c.name, c.identificationNumber FROM CUSTOMER c JOIN TICKET t ON c.customer_id = t.customer_id WHERE data=:data;

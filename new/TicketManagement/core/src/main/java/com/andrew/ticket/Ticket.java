@@ -14,7 +14,7 @@ public class Ticket {
     private Integer location;
     private Date date;
     private String title;
-    private boolean taken;
+    private Boolean taken;
     private Long customerId;
 
     public Long getTicketId() {
@@ -27,11 +27,11 @@ public class Ticket {
         this.ticketId = ticketId;
     }
 
-    public boolean isTaken() {
+    public Boolean isTaken() {
         return taken;
     }
 
-    public void setTaken(boolean taken) {
+    public void setTaken(Boolean taken) {
         this.taken = taken;
     }
 
@@ -75,12 +75,12 @@ public class Ticket {
         this.date = date;
     }
 
-    public Long getCustomer() {
+    public Long getCustomerId() {
 
         return customerId;
     }
 
-    public void setCustomer(Long customerId) {
+    public void setCustomerId(Long customerId) {
 
         this.customerId = customerId;
     }

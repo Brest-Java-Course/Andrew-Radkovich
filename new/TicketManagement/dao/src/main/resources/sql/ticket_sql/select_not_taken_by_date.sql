@@ -1,0 +1,1 @@
+SELECT * FROM TICKETS WHERE data=:data;

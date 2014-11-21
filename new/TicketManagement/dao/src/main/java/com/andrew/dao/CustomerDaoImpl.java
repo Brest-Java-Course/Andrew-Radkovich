@@ -1,6 +1,7 @@
 package com.andrew.dao;
 
 import com.andrew.customer.Customer;
+import com.andrew.dao.mapper.CustomerMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -113,17 +114,5 @@ public class CustomerDaoImpl implements CustomerDao{
         parameters.put(CUSTOMER_NAME, customer.getName());
         parameters.put(CUSTOMER_NUMBER, customer.getIdentificationNumber());
         namedParameterJdbcTemplate.update(updateCustomerSql, parameters);
-    }
-
-    public class CustomerMapper implements RowMapper<Customer> {
-
-        @Override
-        public Customer mapRow(ResultSet resultSet, int i) throws SQLException {
-            Customer customer = new Customer();
-            customer.setCustomerId(resultSet.getLong(CUSTOMER_ID));
-            customer.setName(resultSet.getString(CUSTOMER_NAME));
-            customer.setIdentificationNumber(resultSet.getString(CUSTOMER_NUMBER));
-            return customer;
-        }
     }
 }
