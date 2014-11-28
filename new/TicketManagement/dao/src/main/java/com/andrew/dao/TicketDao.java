@@ -1,5 +1,6 @@
 package com.andrew.dao;
 
+import com.andrew.TotalCost.TotalCustomerCost;
 import com.andrew.customer.Customer;
 import com.andrew.ticket.Ticket;
 
@@ -21,7 +22,7 @@ public interface TicketDao {
     public List<Customer> getCustomersByDate(Date date);
     public List<Customer> getCustomersByDateAndNumber(Date date, String number);
     public List<Ticket> getTicketsOfCustomer(Long customerId);
-    public Long getTicketsSumOfCustomer(Long customerId);
+    public TotalCustomerCost getTicketsSumOfCustomer(Long customerId);
     public void updateTicket(Ticket ticket);
     public void updateSetTakenTrue(Long ticketId);
 }

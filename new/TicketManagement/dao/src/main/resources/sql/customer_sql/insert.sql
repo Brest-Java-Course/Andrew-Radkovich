@@ -1,1 +1,2 @@
-INSERT INTO CUSTOMER (name, identificationNumber) VALUES (:name, :identificationNumber);
+INSERT INTO CUSTOMER (customer_id, name, identificationNumber)
+VALUES (:customer_id, :name, :identificationNumber);

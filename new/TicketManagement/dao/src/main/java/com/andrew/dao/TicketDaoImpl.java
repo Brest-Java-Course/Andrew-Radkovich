@@ -1,21 +1,27 @@
 package com.andrew.dao;
 
+import com.andrew.TotalCost.TotalCustomerCost;
 import com.andrew.customer.Customer;
 import com.andrew.dao.mapper.CustomerMapper;
 import com.andrew.dao.mapper.TicketMapper;
+import com.andrew.dao.mapper.TotalCustomerCostMapper;
 import com.andrew.ticket.Ticket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.Date;
+import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +31,7 @@ import java.util.Map;
 /**
  * Created by andrew on 18.11.14.
  */
+@Component
 public class TicketDaoImpl implements TicketDao {
 
     public static final String TICKET_ID = "ticket_id";
@@ -52,7 +59,7 @@ public class TicketDaoImpl implements TicketDao {
     public String selectNotTakenByDateSql;
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${select_not_taken_tickets_by_date_and_title_path}')).inputStream)}")
     public String selectNotTakenByDateAndTitleSql;
-    @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${select_not_taken_tickets_by_title_path}')).inputStream)}")
+    @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${select_not_taken_by_title_path}')).inputStream)}")
     public String selectNotTakenByTitleSql;
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${select_tickets_of_customer_path}')).inputStream)}")
     public String selectTicketsByCustomerIdSql;
@@ -70,7 +77,8 @@ public class TicketDaoImpl implements TicketDao {
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public void setDataSource(DataSource dataSource) {
+    @PostConstruct
+    public void init() {
 
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
@@ -114,16 +122,21 @@ public class TicketDaoImpl implements TicketDao {
 
     @Override
     public List<Customer> getCustomersByDateAndNumber(Date date, String number) {
-        return null;
+
+        LOGGER.debug("get customers by date={} and number={}", date, number);
+        Map<String, Object> parameters = new HashMap<String, Object>(2);
+        parameters.put(DATE, date);
+        parameters.put(CustomerDaoImpl.CUSTOMER_NUMBER, number);
+        return namedParameterJdbcTemplate.query(getSelectCustomersByDateAndNumberSql, parameters, new CustomerMapper());
     }
 
     @Override
-    public Long getTicketsSumOfCustomer(Long customerId) {
+    public TotalCustomerCost getTicketsSumOfCustomer(Long customerId) {
 
         LOGGER.debug("get tickets sum of customer = {}", customerId);
         Map<String, Object> parameters = new HashMap<String, Object>(1);
         parameters.put(CUSTOMER_ID, customerId);
-        return namedParameterJdbcTemplate.queryForLong(selectSumByCustomerIdSql, parameters);//??????
+        return namedParameterJdbcTemplate.query(selectSumByCustomerIdSql, parameters, new TotalCustomerCostMapper()).get(0);
     }
 
     @Override
@@ -186,9 +199,12 @@ public class TicketDaoImpl implements TicketDao {
     public List<Ticket> selectNotTakenByDateAndTitle(Date date, String title) {
 
         LOGGER.debug("select not taken by date={} and title={}", date, title);
-        Map<String, Object> parameters = new HashMap<String, Object>(2);
-        parameters.put(DATE, date);
-        parameters.put(TITLE, title);
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue(DATE, date, Types.DATE);
+        parameters.addValue(TITLE, title);
+        /*Map<String, Object> parameters = new HashMap<String, Object>(2);
+        parameters.put(DATE, date, Types.VARCHAR);
+        parameters.put(TITLE, title);*/
         return namedParameterJdbcTemplate.query(selectNotTakenByDateAndTitleSql, parameters, new TicketMapper());
     }
 

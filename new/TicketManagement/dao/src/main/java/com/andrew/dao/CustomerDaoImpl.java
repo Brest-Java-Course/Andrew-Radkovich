@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -24,6 +26,7 @@ import java.util.Map;
 /**
  * Created by andrew on 18.11.14.
  */
+@Component
 public class CustomerDaoImpl implements CustomerDao{
 
     public static final String CUSTOMER_NAME = "name";
@@ -50,7 +53,8 @@ public class CustomerDaoImpl implements CustomerDao{
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public void setDataSource(DataSource dataSource) {
+    @PostConstruct
+    public void init() {
 
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
