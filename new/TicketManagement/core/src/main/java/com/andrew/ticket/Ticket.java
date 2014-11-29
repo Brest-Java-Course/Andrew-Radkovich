@@ -117,7 +117,7 @@ public class Ticket {
           .append(", date='").append(date).append('\'')
           .append(", title='").append(title).append('\'')
           .append(", taken=").append(taken)
-          .append(", customer=").append(customerId).append('}');
+          .append(", customerId=").append(customerId).append('}');
 
         return sb.toString();
     }

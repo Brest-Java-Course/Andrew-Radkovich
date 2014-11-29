@@ -61,6 +61,8 @@ public class TicketDaoImpl implements TicketDao {
     public String selectNotTakenByDateAndTitleSql;
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${select_not_taken_by_title_path}')).inputStream)}")
     public String selectNotTakenByTitleSql;
+    @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${select_ticket_by_id_path}')).inputStream)}")
+    public String selectTicketByIdSql;
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${select_tickets_of_customer_path}')).inputStream)}")
     public String selectTicketsByCustomerIdSql;
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${select_sum_path}')).inputStream)}")
@@ -88,13 +90,13 @@ public class TicketDaoImpl implements TicketDao {
 
         LOGGER.debug("add ticket({})", ticket);
         Assert.notNull(ticket);
-        Assert.isNull(ticket.getTicketId(), "ticket id should be specified");
+        Assert.isNull(ticket.getTicketId());
         Assert.notNull(ticket.getCost(), "cost should be specified");
         Assert.notNull(ticket.getDate(), "date should be specified");
         Assert.notNull(ticket.getLocation(), "location should be specified");
         Assert.notNull(ticket.getTitle(), "title should be specified");
-        Assert.notNull(ticket.getCustomerId(), "customer id should be specified");
-        Assert.notNull(ticket.isTaken(), "ticket should be taken or not taken");
+        //Assert.notNull(ticket.getCustomerId(), "customer id should be specified");
+        Assert.notNull(ticket.isTaken(), "ticket can be taken or not taken");
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
@@ -121,13 +123,13 @@ public class TicketDaoImpl implements TicketDao {
     }
 
     @Override
-    public List<Customer> getCustomersByDateAndNumber(Date date, String number) {
+    public Customer getCustomersByDateAndNumber(Date date, String number) {
 
         LOGGER.debug("get customers by date={} and number={}", date, number);
         Map<String, Object> parameters = new HashMap<String, Object>(2);
         parameters.put(DATE, date);
         parameters.put(CustomerDaoImpl.CUSTOMER_NUMBER, number);
-        return namedParameterJdbcTemplate.query(getSelectCustomersByDateAndNumberSql, parameters, new CustomerMapper());
+        return namedParameterJdbcTemplate.queryForObject(getSelectCustomersByDateAndNumberSql, parameters, new CustomerMapper());
     }
 
     @Override
@@ -161,6 +163,15 @@ public class TicketDaoImpl implements TicketDao {
         Map<String, Long> parameter = new HashMap<String, Long>(1);
         parameter.put(TICKET_ID, ticketId);
         namedParameterJdbcTemplate.update(updateSetTakenTrueTicketSql, parameter);
+    }
+
+    @Override
+    public Ticket selectTicketById(Long ticketId) {
+
+        LOGGER.debug("select ticket by id = {}", ticketId);
+        Map<String, Long> parameter = new HashMap<String, Long>(1);
+        parameter.put(TICKET_ID, ticketId);
+        return namedParameterJdbcTemplate.queryForObject(selectTicketByIdSql, parameter, new TicketMapper());
     }
 
     @Override

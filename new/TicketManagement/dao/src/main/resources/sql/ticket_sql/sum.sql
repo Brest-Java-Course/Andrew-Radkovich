@@ -1,1 +1,1 @@
-SELECT SUM(cost) sum FROM TICKET WHERE customer_id = :customer_id;
+SELECT SUM(cost) total_cost FROM TICKET WHERE customer_id = :customer_id;

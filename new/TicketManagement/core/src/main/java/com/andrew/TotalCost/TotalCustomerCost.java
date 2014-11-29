@@ -8,35 +8,18 @@ import com.andrew.ticket.Ticket;
  */
 public class TotalCustomerCost {
 
-    private Customer customer;
-    private Long totalCost;
+    private Integer totalCost;
 
     public TotalCustomerCost() {
 
     }
 
-    public TotalCustomerCost(Customer customer, Long totalCost) {
-
-        this.customer = customer;
-        this.totalCost = totalCost;
-    }
-
-    public Customer getCustomer() {
-
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-
-        this.customer = customer;
-    }
-
-    public Long getTotalCost() {
+    public Integer getTotalCost() {
 
         return totalCost;
     }
 
-    public void setTotalCost(Long totalCost) {
+    public void setTotalCost(Integer totalCost) {
 
         this.totalCost = totalCost;
     }

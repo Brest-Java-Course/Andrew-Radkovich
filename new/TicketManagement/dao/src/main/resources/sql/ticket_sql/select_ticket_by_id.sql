@@ -1,0 +1,1 @@
+SELECT * FROM TICKET WHERE ticket_id=:ticket_id;

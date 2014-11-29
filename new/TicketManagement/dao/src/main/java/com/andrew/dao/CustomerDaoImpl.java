@@ -45,6 +45,8 @@ public class CustomerDaoImpl implements CustomerDao{
     public String selectCustomerByIdSql;
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${select_customer_by_identification_number}')).inputStream)}")
     public String selectCustomerByNumberSql;
+    @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${update_if_customer_was_removed_path}')).inputStream)}")
+    public String updateIfCustomerWasRemovedSql;
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -92,6 +94,7 @@ public class CustomerDaoImpl implements CustomerDao{
         LOGGER.debug("remove customer with id={}", id);
         Map<String, Object> parameters = new HashMap<String, Object>(1);
         parameters.put(CUSTOMER_ID, id);
+        namedParameterJdbcTemplate.update(updateIfCustomerWasRemovedSql, parameters);
         namedParameterJdbcTemplate.update(removeCustomerSql, parameters);
     }
 

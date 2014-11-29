@@ -20,9 +20,10 @@ public interface TicketDao {
     public List<Ticket> selectNotTakenByDateAndTitle(Date date, String title);
     public List<Ticket> selectNotTakenByTitle(String title);
     public List<Customer> getCustomersByDate(Date date);
-    public List<Customer> getCustomersByDateAndNumber(Date date, String number);
+    public Customer getCustomersByDateAndNumber(Date date, String number);
     public List<Ticket> getTicketsOfCustomer(Long customerId);
     public TotalCustomerCost getTicketsSumOfCustomer(Long customerId);
     public void updateTicket(Ticket ticket);
     public void updateSetTakenTrue(Long ticketId);
+    public Ticket selectTicketById(Long ticketId);
 }

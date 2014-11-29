@@ -7,12 +7,12 @@ identificationNumber VARCHAR(10)
 
 CREATE TABLE IF NOT EXISTS TICKET
 (
-ticket_id BIGINT,
+ticket_id BIGINT IDENTITY,
 customer_id BIGINT,
 cost INTEGER,
 location INTEGER,
 data DATE,
 title VARCHAR(50),
-CONSTRAINT pk_ticket PRIMARY KEY (ticket_id, customer_id),
+taken BOOLEAN,
 CONSTRAINT fk_customer_id FOREIGN KEY (customer_id) REFERENCES CUSTOMER (customer_id)
 );

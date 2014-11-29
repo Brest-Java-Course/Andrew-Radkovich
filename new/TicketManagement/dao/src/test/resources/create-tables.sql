@@ -13,5 +13,6 @@ cost INTEGER,
 location INTEGER,
 data DATE,
 title VARCHAR(50),
+taken BOOLEAN,
 CONSTRAINT fk_customer_id FOREIGN KEY (customer_id) REFERENCES CUSTOMER (customer_id)
 );
