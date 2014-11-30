@@ -100,7 +100,7 @@ public class TicketDaoImplTest {
     @Test
     public void getTicketsOfCustomer() {
 
-        List<Ticket> ticketsOfCustomer = ticketDao.getTicketsOfCustomer(1L);
+        List<Ticket> ticketsOfCustomer = ticketDao.getTicketsOfCustomer(2L);
         LOGGER.debug("amount of tickets of customer =  {}", ticketsOfCustomer);
         assertNotNull(ticketsOfCustomer);
         assertFalse(ticketsOfCustomer.isEmpty());
@@ -134,7 +134,7 @@ public class TicketDaoImplTest {
 
         Ticket updatedTicket = new Ticket();
         updatedTicket.setTicketId(id);
-        updatedTicket.setCustomerId(1L);
+        updatedTicket.setCustomerId(2L);
         updatedTicket.setCost(2345);
         updatedTicket.setLocation(1);
         updatedTicket.setTitle("Pirates of the Caribbean 2");
@@ -169,7 +169,7 @@ public class TicketDaoImplTest {
     @Test
     public void getCustomersByDateAndNumber() {
 
-        Customer customer = ticketDao.getCustomersByDateAndNumber(Date.valueOf("2014-3-1"), "AB1");
+        Customer customer = ticketDao.getCustomersByDateAndNumber(Date.valueOf("2014-3-15"), "AB2");
         assertNotNull(customer);
     }
 

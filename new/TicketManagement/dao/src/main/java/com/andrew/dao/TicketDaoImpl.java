@@ -175,6 +175,11 @@ public class TicketDaoImpl implements TicketDao {
     }
 
     @Override
+    public Ticket selectTicketByInfo(Date date, String title, Integer location) {
+        return null;
+    }
+
+    @Override
     public void removeTicket(Long ticketId) {
 
         LOGGER.debug("remove ticket {}", ticketId);

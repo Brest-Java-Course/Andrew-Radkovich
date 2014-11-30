@@ -1,0 +1,1 @@
+SELECT * FROM TICKET WHERE location=:location AND title=:title AND data=:data;

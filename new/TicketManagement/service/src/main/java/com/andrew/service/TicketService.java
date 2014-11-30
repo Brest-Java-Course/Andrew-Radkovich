@@ -1,4 +1,4 @@
-package com.andrew.dao;
+package com.andrew.service;
 
 import com.andrew.TotalCost.TotalCustomerCost;
 import com.andrew.customer.Customer;
@@ -8,9 +8,9 @@ import java.sql.Date;
 import java.util.List;
 
 /**
- * Created by andrew on 18.11.14.
+ * Created by andrew on 30.11.14.
  */
-public interface TicketDao {
+public interface TicketService {
 
     public Long addTicket(Ticket ticket);
     public void removeTicket(Long ticketId);
@@ -26,5 +26,4 @@ public interface TicketDao {
     public void updateTicket(Ticket ticket);
     public void updateSetTakenTrue(Long ticketId);
     public Ticket selectTicketById(Long ticketId);
-    public Ticket selectTicketByInfo(Date date, String title, Integer location );
 }
