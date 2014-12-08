@@ -2,6 +2,8 @@ package com.andrew.service;
 
 import com.andrew.customer.Customer;
 import com.andrew.dao.CustomerDao;
+import com.andrew.dao.TicketDao;
+import com.andrew.ticket.Ticket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerDao customerDao;
 
+    @Autowired
+    private TicketDao ticketDao;
+
     @Override
     @Transactional
     public Long addCustomer(Customer customer) {
@@ -43,6 +48,11 @@ public class CustomerServiceImpl implements CustomerService {
     public void removeCustomer(Long customerId) {
 
         LOGGER.debug("remove customer with id = {}", customerId);
+        List<Ticket> tickets = ticketDao.getTicketsOfCustomer(customerId);
+        for(Ticket ticket : tickets) {
+            LOGGER.debug("set NOT TAKEN to ticket with id={}", ticket.getTicketId());
+            ticketDao.updateTicketSetTakenFalse(ticket.getTicketId());
+        }
         customerDao.removeCustomer(customerId);
     }
 

@@ -1,0 +1,1 @@
+UPDATE TICKET SET taken=FALSE WHERE ticket_id=:ticket_id;

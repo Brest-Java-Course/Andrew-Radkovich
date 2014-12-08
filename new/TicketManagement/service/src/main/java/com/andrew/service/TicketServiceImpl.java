@@ -7,6 +7,7 @@ import com.andrew.ticket.Ticket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Created by andrew on 30.11.14.
  */
+@Service
 public class TicketServiceImpl implements TicketService {
 
     private static final Logger LOGGER = LogManager.getLogger();

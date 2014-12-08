@@ -71,6 +71,8 @@ public class TicketDaoImpl implements TicketDao {
     public String updateTicketSql;
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${update_set_taken_true_path}')).inputStream)}")
     public String updateSetTakenTrueTicketSql;
+    @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${update_set_taken_false_path}')).inputStream)}")
+    public String updateSetTakenFalseTicketSql;
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -175,8 +177,12 @@ public class TicketDaoImpl implements TicketDao {
     }
 
     @Override
-    public Ticket selectTicketByInfo(Date date, String title, Integer location) {
-        return null;
+    public void updateTicketSetTakenFalse(Long ticketId) {
+
+        LOGGER.debug("update ticket: set taken false");
+        Map<String, Long> parameter = new HashMap<String, Long>(1);
+        parameter.put(TICKET_ID, ticketId);
+        namedParameterJdbcTemplate.update(updateSetTakenFalseTicketSql, parameter);
     }
 
     @Override

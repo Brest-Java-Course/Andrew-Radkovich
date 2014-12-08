@@ -26,5 +26,5 @@ public interface TicketDao {
     public void updateTicket(Ticket ticket);
     public void updateSetTakenTrue(Long ticketId);
     public Ticket selectTicketById(Long ticketId);
-    public Ticket selectTicketByInfo(Date date, String title, Integer location );
+    public void updateTicketSetTakenFalse(Long ticketId);
 }

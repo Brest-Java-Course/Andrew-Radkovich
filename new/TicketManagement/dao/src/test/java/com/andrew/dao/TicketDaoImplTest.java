@@ -169,7 +169,7 @@ public class TicketDaoImplTest {
     @Test
     public void getCustomersByDateAndNumber() {
 
-        Customer customer = ticketDao.getCustomersByDateAndNumber(Date.valueOf("2014-3-15"), "AB2");
+        Customer customer = ticketDao.getCustomersByDateAndNumber(Date.valueOf("2014-3-2"), "AB2");
         assertNotNull(customer);
     }
 
