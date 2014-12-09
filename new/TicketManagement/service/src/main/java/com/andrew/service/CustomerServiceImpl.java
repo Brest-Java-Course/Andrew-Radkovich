@@ -32,13 +32,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public Long addCustomer(Customer customer) {
 
-        LOGGER.debug("add customer = {}", customer);
         Assert.notNull(customer);
         Assert.isNull(customer.getCustomerId());
         Assert.notNull(customer.getName(), "customer's name should be specified");
         Assert.notNull(customer.getIdentificationNumber(), "customers PID should be specified");
+        LOGGER.debug("add customer = {}", customer);
 
-        if ( customerDao.getCustomerByNumber(customer.getIdentificationNumber()) != null) {
+        Customer existingCustomer = customerDao.getCustomerByNumber(customer.getIdentificationNumber());
+        if ( existingCustomer != null) {
             throw new IllegalArgumentException(customer + " is present in DB");
         }
         return customerDao.addCustomer(customer);

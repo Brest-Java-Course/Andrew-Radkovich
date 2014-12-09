@@ -40,7 +40,35 @@ public class TicketDataFixture {
     public static List<Ticket> getAllTickets() {
 
         List<Ticket> tickets = new ArrayList<Ticket>(5);
+        for(long i = 1; i <= 5; i++) {
+            Ticket ticket = new Ticket();
+            ticket.setTicketId(i);
+            ticket.setCustomerId(i);
+            ticket.setCost(1000);
+            ticket.setTaken(Boolean.TRUE);
+            ticket.setLocation(Long.valueOf(i).intValue());
+            ticket.setDate(Date.valueOf("2014-9-9"));
+            ticket.setTitle("The Dark Knight");
+            tickets.add(ticket);
+        }
+        return tickets;
+    }
 
+    public static List<Ticket> getTicketsOfExistingCustomer(Long customerId) {
+
+        int size = 0;
+        List<Ticket> tickets = new ArrayList<Ticket>(size);
+        for(int i = 0; i < size; i++) {
+            Ticket ticket = new Ticket();
+            ticket.setTicketId(Long.valueOf(i));
+            ticket.setCustomerId(customerId);
+            ticket.setCost(1000);
+            ticket.setTaken(Boolean.TRUE);
+            ticket.setLocation(Long.valueOf(i).intValue());
+            ticket.setDate(Date.valueOf("2014-1-1"));
+            ticket.setTitle("The Dark Knight");
+            tickets.add(ticket);
+        }
         return tickets;
     }
 }
