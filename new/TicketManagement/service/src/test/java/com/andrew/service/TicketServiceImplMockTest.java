@@ -52,11 +52,10 @@ public class TicketServiceImplMockTest {
     @Test
     public void removeTicket() {
 
-        Ticket ticket = getExistingTicket(1L);
-        ticketDao.removeTicket(ticket.getTicketId());
+        ticketDao.removeTicket(10L);
         expectLastCall();
         replay(ticketDao);
-        ticketService.removeTicket(ticket.getTicketId());
+        ticketService.removeTicket(10L);
         verify(ticketDao);
     }
 

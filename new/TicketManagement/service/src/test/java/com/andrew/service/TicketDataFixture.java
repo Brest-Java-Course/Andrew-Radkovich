@@ -24,10 +24,10 @@ public class TicketDataFixture {
         return ticket;
     }
 
-    public static Ticket getExistingTicket(Long ticketId) {
+    public static Ticket getExistingTicket() {
 
         Ticket ticket = new Ticket();
-        ticket.setTicketId(ticketId);
+        ticket.setTicketId(1L);
         ticket.setTaken(Boolean.TRUE);
         ticket.setTitle("Prestige");
         ticket.setLocation(1);

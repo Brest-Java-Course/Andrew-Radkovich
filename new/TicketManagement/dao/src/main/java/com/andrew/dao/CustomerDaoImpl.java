@@ -33,6 +33,8 @@ public class CustomerDaoImpl implements CustomerDao{
     public static final String CUSTOMER_ID = "customer_id";
     public static final String CUSTOMER_NUMBER = "identificationNumber";
 
+    //public static final String addNewCustomerSql = "INSERT INTO CUSTOMER (customer_id, name, identificationNumber) VALUES (:customer_id, :name, :identificationNumber);";
+
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${insert_into_customer_path}')).inputStream)}")
     public String addNewCustomerSql;
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${select_all_customers_path}')).inputStream)}")
@@ -50,14 +52,15 @@ public class CustomerDaoImpl implements CustomerDao{
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    @Autowired
-    private DataSource dataSource;
+    //@Autowired
+    //private DataSource dataSource;
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    @PostConstruct
-    public void init() {
+    //@PostConstruct
+    public void setDataSource(DataSource dataSource) {
 
+        LOGGER.debug("setting datasource");
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 

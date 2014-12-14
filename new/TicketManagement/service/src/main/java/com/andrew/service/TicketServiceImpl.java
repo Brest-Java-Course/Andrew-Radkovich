@@ -25,6 +25,11 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     private TicketDao ticketDao;
 
+    public void setTicketDao(TicketDao ticketDao) {
+
+        this.ticketDao = ticketDao;
+    }
+
     @Override
     @Transactional
     public Long addTicket(Ticket ticket) {

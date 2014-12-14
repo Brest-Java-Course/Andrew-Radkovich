@@ -76,13 +76,13 @@ public class TicketDaoImpl implements TicketDao {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    @Autowired
-    private DataSource dataSource;
+    //@Autowired
+    //private DataSource dataSource;
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    @PostConstruct
-    public void init() {
+    //@PostConstruct
+    public void setDataSource(DataSource dataSource) {
 
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }

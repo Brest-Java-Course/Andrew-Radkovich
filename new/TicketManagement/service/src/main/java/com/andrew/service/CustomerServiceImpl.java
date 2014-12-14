@@ -28,6 +28,16 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private TicketDao ticketDao;
 
+    public void setCustomerDao(CustomerDao customerDao) {
+
+        this.customerDao = customerDao;
+    }
+
+    public void setTicketDao(TicketDao ticketDao) {
+
+        this.ticketDao = ticketDao;
+    }
+
     @Override
     @Transactional
     public Long addCustomer(Customer customer) {
