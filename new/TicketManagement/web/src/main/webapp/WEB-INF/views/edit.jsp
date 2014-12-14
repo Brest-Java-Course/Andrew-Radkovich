@@ -18,5 +18,24 @@
         <form action="removeCustomer" method="POST">
             <input type="submit" name="customerId" value="${customer.customerId}"/>
         </form>
+        <h3>Tickets of customer</h3>
+        <ul>
+                <table border="1">
+                    <tr>
+                        <td>Title</td>
+                        <td>Date</td>
+                        <td>Cost</td>
+                        <td>Location</td>
+                    </tr>
+                    <c:forEach items="${ticketsOfCustomer}" var="ticket">
+                        <tr>
+                            <td>${ticket.title}</td>
+                            <td>${ticket.date}</td>
+                            <td>${ticket.cost}</td>
+                            <td>${ticket.location}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </ul>
     </body>
 </html>

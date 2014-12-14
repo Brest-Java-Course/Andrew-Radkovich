@@ -4,6 +4,8 @@ import com.andrew.customer.Customer;
 import com.andrew.dao.CustomerDao;
 import com.andrew.dao.CustomerDaoImpl;
 import com.andrew.service.CustomerService;
+import com.andrew.service.TicketService;
+import com.andrew.ticket.Ticket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.sql.DataSource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,6 +30,9 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private TicketService ticketService;
+
     @RequestMapping(value = {"/", "home"}, method = RequestMethod.GET)
     public String showHomePage(Map<String, Object> model) {
 
@@ -39,7 +45,9 @@ public class CustomerController {
     public ModelAndView editCustomer(@RequestParam("id")Long id) {
 
         Customer customer = customerService.getCustomerById(id);
+        List<Ticket> ticketsOfCustomer = ticketService.getTicketsOfCustomer(id);
         ModelAndView modelAndView = new ModelAndView("edit", "customer", customer);
+        modelAndView.addObject("ticketsOfCustomer", ticketsOfCustomer);
         return modelAndView;
     }
 
