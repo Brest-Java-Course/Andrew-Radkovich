@@ -60,15 +60,25 @@ public class TicketController {
     public ModelAndView filterByDate(@RequestParam("date")String date,
                                      @RequestParam("pid")String pid) {
 
-        //TODO: date validation
-        Date dateOfPerformance = Date.valueOf(date);
+        Date dateOfPerformance = null;
+        Customer customer = null;
         ModelAndView view = new ModelAndView("newOrder");
-        Customer customer = customerService.getCustomerByNumber(pid);
-        view.addObject("customers", asList(customer));
-        List<Ticket> tickets = ticketService.selectNotTakenByDate(dateOfPerformance);
-        LOGGER.debug("not taken of specific data={}, size={}, tickets={}", date, tickets.size(), tickets);
-        //view.addObject("customers", customerService.getCustomers());
-        view.addObject("tickets", tickets);
+        if("".equals(date)) {
+
+            view.addObject("tickets", ticketService.selectNotTaken());
+        }
+        else {
+            //TODO: date validation
+            dateOfPerformance = Date.valueOf(date);
+            view.addObject("tickets", ticketService.selectNotTakenByDate(dateOfPerformance));
+        }
+        if("".equals(pid)) {
+            view.addObject("customers", customerService.getCustomers());
+        }
+        else {
+            customer = customerService.getCustomerByNumber(pid);
+            view.addObject("customers", asList(customer));
+        }
         return view;
     }
 }
