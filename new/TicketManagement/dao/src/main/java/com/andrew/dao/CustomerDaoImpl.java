@@ -60,14 +60,14 @@ public class CustomerDaoImpl implements CustomerDao{
     //@PostConstruct
     public void setDataSource(DataSource dataSource) {
 
-        LOGGER.debug("setting datasource");
+        LOGGER.debug("DAO: setting datasource");
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     @Override
     public Long addCustomer(Customer customer) {
 
-        LOGGER.debug("add customer({})", customer);
+        LOGGER.debug("DAO: add customer({})", customer);
         Assert.notNull(customer);
         Assert.isNull(customer.getCustomerId());
         Assert.notNull(customer.getName(), "Customer name should be specified");
@@ -81,20 +81,22 @@ public class CustomerDaoImpl implements CustomerDao{
 
         namedParameterJdbcTemplate.update(addNewCustomerSql, sqlParameterSource, keyHolder);
 
-        return keyHolder.getKey().longValue();
+        Long id = keyHolder.getKey().longValue();
+        LOGGER.debug("DAO: new customer id={}", id);
+        return id;
     }
 
     @Override
     public List<Customer> getCustomers() {
 
-        LOGGER.debug("get customers");
+        LOGGER.debug("DAO: get customers");
         return namedParameterJdbcTemplate.query(selectAllCustomersSql, new CustomerMapper());
     }
 
     @Override
     public void removeCustomer(Long id) {
 
-        LOGGER.debug("remove customer with id={}", id);
+        LOGGER.debug("DAO: remove customer with id={}", id);
         Map<String, Object> parameters = new HashMap<String, Object>(1);
         parameters.put(CUSTOMER_ID, id);
         namedParameterJdbcTemplate.update(updateIfCustomerWasRemovedSql, parameters);
@@ -104,7 +106,7 @@ public class CustomerDaoImpl implements CustomerDao{
     @Override
     public Customer getCustomerById(Long id) {
 
-        LOGGER.debug("get customer by Id={}", id);
+        LOGGER.debug("DAO: get customer by Id={}", id);
         Map<String, Object> parameters = new HashMap<String, Object>(1);
         parameters.put(CUSTOMER_ID, id);
         return namedParameterJdbcTemplate.queryForObject(selectCustomerByIdSql, parameters, new CustomerMapper());
@@ -113,7 +115,7 @@ public class CustomerDaoImpl implements CustomerDao{
     @Override
     public Customer getCustomerByNumber(String identificationNumber) {
 
-        LOGGER.debug("get customer by Id={}", identificationNumber);
+        LOGGER.debug("DAO: get customer by Number={}", identificationNumber);
         Map<String, String> parameters = new HashMap<String, String>(1);
         parameters.put(CUSTOMER_NUMBER, identificationNumber);
         return namedParameterJdbcTemplate.queryForObject(selectCustomerByNumberSql, parameters, new CustomerMapper());
@@ -122,7 +124,7 @@ public class CustomerDaoImpl implements CustomerDao{
     @Override
     public void updateCustomer(Customer customer) {
 
-        LOGGER.debug("update customer({})", customer);
+        LOGGER.debug("DAO: update customer({})", customer);
         Map<String, Object> parameters = new HashMap<String, Object>(3);
         parameters.put(CUSTOMER_ID, customer.getCustomerId());
         parameters.put(CUSTOMER_NAME, customer.getName());

@@ -1,1 +1,1 @@
-UPDATE TICKET SET taken=TRUE WHERE ticket_id=:ticket_id;
+UPDATE TICKET SET taken=TRUE, customer_id=:customer_id WHERE ticket_id=:ticket_id;

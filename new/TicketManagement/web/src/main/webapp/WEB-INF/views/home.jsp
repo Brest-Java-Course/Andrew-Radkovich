@@ -1,17 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!-- Tell the JSP Page that please do not ignore Expression Language -->
 <%@ page isELIgnored="false"%>
 <!DOCTYPE html>
 <html lang="en">
 <body>
-    <style type="text/css">
-        TH {
-            background-color: #199619
-        }
-    </style>
     <h2>Main page</h2>
+<!--    <form action="searchByPid" method="GET">
+        <label><input type="text" name="pid"></label>
+        <input type="submit" name="search"/>
+    </form>-->
     <ul>
         <table border="1">
             <tr>
@@ -32,6 +30,13 @@
             </c:forEach>
         </table>
     </ul>
-
+    <h3>Add Customer</h3>
+    <form action="addCustomerForm" method="GET">
+        <input type="submit" value="Add Customer"/>
+    </form>
+    <h3>New order</h3>
+    <form action="newOrder" method="GET">
+        <input type="submit" value="New order"/>
+    </form>
 </body>
 </html>

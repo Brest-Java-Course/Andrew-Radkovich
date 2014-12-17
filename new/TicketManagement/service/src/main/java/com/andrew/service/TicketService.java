@@ -24,6 +24,6 @@ public interface TicketService {
     public List<Ticket> getTicketsOfCustomer(Long customerId);
     public TotalCustomerCost getTicketsSumOfCustomer(Long customerId);
     public void updateTicket(Ticket ticket);
-    public void updateSetTakenTrue(Long ticketId);
+    public void updateSetTakenTrue(Long ticketId, Long customerId);
     public Ticket selectTicketById(Long ticketId);
 }

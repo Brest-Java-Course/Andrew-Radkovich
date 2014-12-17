@@ -13,6 +13,6 @@ INSERT INTO TICKET (ticket_id, customer_id, cost, location, data, title, taken) 
 INSERT INTO TICKET (ticket_id, customer_id, cost, location, data, title, taken) VALUES (5, 1, 2300, 3, '2014-3-1', 'interstellar', TRUE);
 INSERT INTO TICKET (ticket_id, customer_id, cost, location, data, title, taken) VALUES (6, 2, 2300, 4, '2014-3-15', 'green mile', TRUE);
 
-INSERT INTO TICKET (ticket_id, customer_id, cost, location, data, title, taken) VALUES (7, NULL, 2300, 4, '2014-3-15', 'green mile', FALSE);
-INSERT INTO TICKET (ticket_id, customer_id, cost, location, data, title, taken) VALUES (8, NULL, 2300, 4, '2014-3-15', 'Star Wars : New Hope', FALSE);
-INSERT INTO TICKET (ticket_id, customer_id, cost, location, data, title, taken) VALUES (9, NULL, 2300, 4, '2014-3-15', 'interstellar', FALSE);
+INSERT INTO TICKET (ticket_id, customer_id, cost, location, data, title, taken) VALUES (7, NULL, 2300, 1, '2014-3-1', 'green mile', FALSE);
+INSERT INTO TICKET (ticket_id, customer_id, cost, location, data, title, taken) VALUES (8, NULL, 2300, 2, '2014-3-2', 'Star Wars : New Hope', FALSE);
+INSERT INTO TICKET (ticket_id, customer_id, cost, location, data, title, taken) VALUES (9, NULL, 2300, 3, '2014-3-3', 'interstellar', FALSE);

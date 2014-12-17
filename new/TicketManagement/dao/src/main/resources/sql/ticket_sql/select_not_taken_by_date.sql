@@ -1,1 +1,1 @@
-SELECT * FROM TICKET WHERE data=:data;
+SELECT * FROM TICKET WHERE data=:data AND taken=FALSE;

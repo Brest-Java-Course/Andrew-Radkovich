@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -52,5 +53,18 @@ public class CustomerControllerTest {
         assertEquals("home", viewName);
         assertSame(expectedCustomers, model.get("Customers"));
         verify(customerService).getCustomers();
+    }
+
+    //@Test
+    public void addCustomer() {
+
+        Customer customer = new Customer();
+        customer.setIdentificationNumber("AB123");
+        customer.setName("Mark1");
+
+        when(customerService.addCustomer(customer)).thenReturn(1L);
+        ModelAndView view = controller.addCustomer(customer.getName(), customer.getIdentificationNumber());
+        assertEquals(view.getViewName(), "home");
+        verify(customerService).addCustomer(customer);
     }
 }

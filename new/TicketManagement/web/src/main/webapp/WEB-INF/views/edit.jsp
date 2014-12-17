@@ -7,6 +7,7 @@
 <html lang="en">
     <body>
         <h2>Customer info</h2>
+        <a href=".">to main page</a><br>
         <form action="updateCustomer" method="POST" modelAttribute="customer">
             <ul>
                 <li>Id: <input type="text" name="id" value="${customer.customerId}" readonly="readonly"/></li>

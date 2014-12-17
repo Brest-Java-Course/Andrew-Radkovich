@@ -90,7 +90,7 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public Long addTicket(Ticket ticket) {
 
-        LOGGER.debug("add ticket({})", ticket);
+        LOGGER.debug("DAO: add ticket({})", ticket);
         Assert.notNull(ticket);
         Assert.isNull(ticket.getTicketId());
         Assert.notNull(ticket.getCost(), "cost should be specified");
@@ -118,7 +118,7 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public List<Customer> getCustomersByDate(Date date) {
 
-        LOGGER.debug("select customers by date of performance");
+        LOGGER.debug("DAO: select customers by date of performance");
         Map<String, Date> parameterSource = new HashMap<String, Date>(1);
         parameterSource.put(DATE, date);
         return namedParameterJdbcTemplate.query(selectCustomersByDateSql, parameterSource, new CustomerMapper());
@@ -127,7 +127,7 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public Customer getCustomersByDateAndNumber(Date date, String number) {
 
-        LOGGER.debug("get customers by date={} and number={}", date, number);
+        LOGGER.debug("DAO: get customers by date={} and number={}", date, number);
         Map<String, Object> parameters = new HashMap<String, Object>(2);
         parameters.put(DATE, date);
         parameters.put(CustomerDaoImpl.CUSTOMER_NUMBER, number);
@@ -137,7 +137,7 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public TotalCustomerCost getTicketsSumOfCustomer(Long customerId) {
 
-        LOGGER.debug("get tickets sum of customer = {}", customerId);
+        LOGGER.debug("DAO: get tickets sum of customer = {}", customerId);
         Map<String, Object> parameters = new HashMap<String, Object>(1);
         parameters.put(CUSTOMER_ID, customerId);
         return namedParameterJdbcTemplate.query(selectSumByCustomerIdSql, parameters, new TotalCustomerCostMapper()).get(0);
@@ -146,7 +146,7 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public void updateTicket(Ticket ticket) {
 
-        LOGGER.debug("update whole ticket({})", ticket);
+        LOGGER.debug("DAO: update whole ticket({})", ticket);
         Map<String, Object> parameters = new HashMap<String, Object>(7);
         parameters.put(TICKET_ID, ticket.getTicketId());
         parameters.put(CUSTOMER_ID, ticket.getCustomerId());
@@ -159,18 +159,19 @@ public class TicketDaoImpl implements TicketDao {
     }
 
     @Override
-    public void updateSetTakenTrue(Long ticketId) {
+    public void updateSetTakenTrue(Long ticketId, Long customerId) {
 
-        LOGGER.debug("set taken true {}", ticketId);
+        LOGGER.debug("DAO: set taken true {}", ticketId);
         Map<String, Long> parameter = new HashMap<String, Long>(1);
         parameter.put(TICKET_ID, ticketId);
+        parameter.put(CUSTOMER_ID, customerId);
         namedParameterJdbcTemplate.update(updateSetTakenTrueTicketSql, parameter);
     }
 
     @Override
     public Ticket selectTicketById(Long ticketId) {
 
-        LOGGER.debug("select ticket by id = {}", ticketId);
+        LOGGER.debug("DAO: select ticket by id = {}", ticketId);
         Map<String, Long> parameter = new HashMap<String, Long>(1);
         parameter.put(TICKET_ID, ticketId);
         return namedParameterJdbcTemplate.queryForObject(selectTicketByIdSql, parameter, new TicketMapper());
@@ -179,7 +180,7 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public void updateTicketSetTakenFalse(Long ticketId) {
 
-        LOGGER.debug("update ticket: set taken false");
+        LOGGER.debug("DAO: update ticket: set taken false");
         Map<String, Long> parameter = new HashMap<String, Long>(1);
         parameter.put(TICKET_ID, ticketId);
         namedParameterJdbcTemplate.update(updateSetTakenFalseTicketSql, parameter);
@@ -188,7 +189,7 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public void removeTicket(Long ticketId) {
 
-        LOGGER.debug("remove ticket {}", ticketId);
+        LOGGER.debug("DAO: remove ticket {}", ticketId);
         Map<String, Long> parameter = new HashMap<String, Long>(1);
         parameter.put(TICKET_ID, ticketId);
         namedParameterJdbcTemplate.update(removeTicketSql, parameter);
@@ -197,21 +198,21 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public List<Ticket> selectNotTaken() {
 
-        LOGGER.debug("select not taken");
+        LOGGER.debug("DAO: select not taken");
         return namedParameterJdbcTemplate.query(selectAllNotTakenTicketsSql, new TicketMapper());
     }
 
     @Override
     public List<Ticket> selectAllTickets() {
 
-        LOGGER.debug("select all tickets");
+        LOGGER.debug("DAO: select all tickets");
         return namedParameterJdbcTemplate.query(selectAllTicketsSql, new TicketMapper());
     }
 
     @Override
     public List<Ticket> selectNotTakenByDate(Date date) {
 
-        LOGGER.debug("select not taken by date={}", date);
+        LOGGER.debug("DAO: select not taken by date={}", date);
         Map<String, Date> parameter = new HashMap<String, Date>(1);
         parameter.put(DATE, date);
         return namedParameterJdbcTemplate.query(selectNotTakenByDateSql, parameter, new TicketMapper());
@@ -220,7 +221,7 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public List<Ticket> selectNotTakenByDateAndTitle(Date date, String title) {
 
-        LOGGER.debug("select not taken by date={} and title={}", date, title);
+        LOGGER.debug("DAO: select not taken by date={} and title={}", date, title);
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue(DATE, date, Types.DATE);
         parameters.addValue(TITLE, title);
@@ -233,7 +234,7 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public List<Ticket> selectNotTakenByTitle(String title) {
 
-        LOGGER.debug("select not taken by title={}", title);
+        LOGGER.debug("DAO: select not taken by title={}", title);
         Map<String, String> parameter = new HashMap<String, String>(1);
         parameter.put(TITLE, title);
         return namedParameterJdbcTemplate.query(selectNotTakenByTitleSql, parameter, new TicketMapper());
@@ -242,7 +243,7 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public List<Ticket> getTicketsOfCustomer(Long customerId) {
 
-        LOGGER.debug("select tickets of customer={}", customerId);
+        LOGGER.debug("DAO: select tickets of customer={}", customerId);
         Map<String, Long> parameter = new HashMap<String, Long>(1);
         parameter.put(CUSTOMER_ID, customerId);
         return namedParameterJdbcTemplate.query(selectTicketsByCustomerIdSql, parameter, new TicketMapper());

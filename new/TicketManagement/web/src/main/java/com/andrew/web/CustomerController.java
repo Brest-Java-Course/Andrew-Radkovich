@@ -1,8 +1,6 @@
 package com.andrew.web;
 
 import com.andrew.customer.Customer;
-import com.andrew.dao.CustomerDao;
-import com.andrew.dao.CustomerDaoImpl;
 import com.andrew.service.CustomerService;
 import com.andrew.service.TicketService;
 import com.andrew.ticket.Ticket;
@@ -15,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
+
+import static java.util.Arrays.asList;
 
 /**
  * Created by andrew on 13.12.14.
@@ -36,7 +35,7 @@ public class CustomerController {
     @RequestMapping(value = {"/", "home"}, method = RequestMethod.GET)
     public String showHomePage(Map<String, Object> model) {
 
-        LOGGER.debug("showing home page");
+        LOGGER.debug("CONTROLLER: showing home page");
         model.put("Customers", customerService.getCustomers());
         return "home";
     }
@@ -62,7 +61,7 @@ public class CustomerController {
         customer.setIdentificationNumber(pid);
 
         customerService.updateCustomer(customer);
-        return new ModelAndView("edit", "customer", customer);
+        return new ModelAndView("redirect:/home", "customer", customer);
     }
 
     @RequestMapping(value = "removeCustomer", method = RequestMethod.POST)
@@ -70,5 +69,38 @@ public class CustomerController {
 
         customerService.removeCustomer(id);
         return "redirect:/home";
+    }
+
+    @RequestMapping(value = "searchByPid", method = RequestMethod.GET)
+    public ModelAndView searchCustomerByNumber(@RequestParam("pid")String pid) {
+
+        LOGGER.debug("CONTROLLER: search customer by number");
+        ModelAndView modelAndView = new ModelAndView("newOrder");
+        Customer customer = customerService.getCustomerByNumber(pid);
+        modelAndView.addObject("customers", asList(customer));
+        modelAndView.addObject("tickets", ticketService.selectNotTaken());
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/addCustomerForm", method = RequestMethod.GET)
+    public ModelAndView getAddCustomerFormView() {
+
+        LOGGER.debug("CONTROLLER: showing add customer form");
+        ModelAndView modelAndView = new ModelAndView("addCustomerForm", "customer", new Customer());
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "addCustomer")
+    public ModelAndView addCustomer(@RequestParam("name")String name,
+                                    @RequestParam("pid")String pid) {
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/home");
+        Customer customer = new Customer();
+        customer.setName(name);
+        customer.setIdentificationNumber(pid);
+        LOGGER.debug("CONTROLLER: add customer={}", customer);
+        Long id = customerService.addCustomer(customer);
+        LOGGER.debug("CONTROLLER: new customer id = {}", id);
+        return modelAndView;
     }
 }

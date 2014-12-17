@@ -154,7 +154,7 @@ public class TicketDaoImplTest {
         List<Ticket> notTakenTickets = ticketDao.selectNotTaken();
         int notTakenTicketsSizeBefore = notTakenTickets.size();
 
-        ticketDao.updateSetTakenTrue(notTakenTickets.get(0).getTicketId());
+        ticketDao.updateSetTakenTrue(notTakenTickets.get(0).getTicketId(), 2L);
         assertEquals(notTakenTicketsSizeBefore, ticketDao.selectNotTaken().size() + 1);
     }
 
