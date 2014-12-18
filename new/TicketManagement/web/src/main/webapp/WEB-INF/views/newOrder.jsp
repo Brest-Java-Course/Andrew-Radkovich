@@ -55,11 +55,11 @@
             </ul>
             <input type="submit" value="Place order">
         </form>
-        <script src="jquery-1.11.1.js">
+        <script src="<c:url value="/WEB-INF/classes/js/jquery-1.11.1.js" />"></script>
         <script>
         $(document).ready( function(){
             $('#dateSubmitBtn').click( function() {
-                console.log('Hello');
+                console.log('button click handler');
                 if( isValidDate($('#dateLineEdit').val()) ) {
                     alert('Valid date');
                     return true;
@@ -72,29 +72,16 @@
             )};
 
             function isValidDate(str){
-                // STRING FORMAT yyyy-mm-dd
                 if(str=="" || str==null){return false;}
-
-                // m[1] is year 'YYYY' * m[2] is month 'MM' * m[3] is day 'DD'
                 var m = str.match(/(\d{4})-(\d{2})-(\d{2})/);
-
-                // STR IS NOT FIT m IS NOT OBJECT
                 if( m === null || typeof m !== 'object'){return false;}
-
-                // CHECK m TYPE
                 if (typeof m !== 'object' && m !== null && m.size!==3){return false;}
-
-                var ret = true; //RETURN VALUE
+                var ret = true;
                 var thisYear = new Date().getFullYear(); //YEAR NOW
-                var minYear = 1999; //MIN YEAR
-
-                // YEAR CHECK
+                var minYear = 1993;
                 if( (m[1].length < 4) || m[1] < minYear || m[1] > thisYear){ret = false;}
-                // MONTH CHECK
                 if( (m[1].length < 2) || m[2] < 1 || m[2] > 12){ret = false;}
-                // DAY CHECK
                 if( (m[1].length < 2) || m[3] < 1 || m[3] > 31){ret = false;}
-
                 return ret;
             }
         </script>
