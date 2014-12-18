@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <body>
-
+        <h2>Invalid date page</h2>
+        <a href='<spring:url value="/newOrder" >'>back to new order page</a>
     </body>
 </html>

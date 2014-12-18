@@ -55,35 +55,5 @@
             </ul>
             <input type="submit" value="Place order">
         </form>
-        <script src="<c:url value="/WEB-INF/classes/js/jquery-1.11.1.js" />"></script>
-        <script>
-        $(document).ready( function(){
-            $('#dateSubmitBtn').click( function() {
-                console.log('button click handler');
-                if( isValidDate($('#dateLineEdit').val()) ) {
-                    alert('Valid date');
-                    return true;
-                }
-                else {
-                    alert('Invalid date');
-                    return false;
-                }
-            });
-            )};
-
-            function isValidDate(str){
-                if(str=="" || str==null){return false;}
-                var m = str.match(/(\d{4})-(\d{2})-(\d{2})/);
-                if( m === null || typeof m !== 'object'){return false;}
-                if (typeof m !== 'object' && m !== null && m.size!==3){return false;}
-                var ret = true;
-                var thisYear = new Date().getFullYear(); //YEAR NOW
-                var minYear = 1993;
-                if( (m[1].length < 4) || m[1] < minYear || m[1] > thisYear){ret = false;}
-                if( (m[1].length < 2) || m[2] < 1 || m[2] > 12){ret = false;}
-                if( (m[1].length < 2) || m[3] < 1 || m[3] > 31){ret = false;}
-                return ret;
-            }
-        </script>
     </body>
 </html>

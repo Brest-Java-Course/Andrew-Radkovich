@@ -16,6 +16,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static com.andrew.web.DateValidator.isValidDate;
 import static java.util.Arrays.asList;
 
 /**
@@ -68,9 +69,14 @@ public class TicketController {
             view.addObject("tickets", ticketService.selectNotTaken());
         }
         else {
-            //TODO: date validation
-            dateOfPerformance = Date.valueOf(date);
-            view.addObject("tickets", ticketService.selectNotTakenByDate(dateOfPerformance));
+            if( isValidDate(date)) {
+                dateOfPerformance = Date.valueOf(date);
+                view.addObject("tickets", ticketService.selectNotTakenByDate(dateOfPerformance));
+            }
+            else {
+                ModelAndView invalidDateErrorView = new ModelAndView("error/invalidDate");
+                return invalidDateErrorView;
+            }
         }
         if("".equals(pid)) {
             view.addObject("customers", customerService.getCustomers());
