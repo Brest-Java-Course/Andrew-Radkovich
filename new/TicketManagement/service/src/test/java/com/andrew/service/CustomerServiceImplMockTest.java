@@ -75,6 +75,9 @@ public class CustomerServiceImplMockTest {
         Customer newCustomer = customer;
         newCustomer.setName("New name");
 
+        customerDao.getCustomerByNumber(customer.getIdentificationNumber());
+        expectLastCall().andReturn(customer);
+
         customerDao.updateCustomer(customer);
         expectLastCall();
 

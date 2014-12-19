@@ -101,6 +101,12 @@ public class CustomerServiceImpl implements CustomerService {
     public void updateCustomer(Customer customer) {
 
         LOGGER.debug("SERVICE: update customer = {}", customer);
+        Customer existingCustomer = getCustomerByNumber(customer.getIdentificationNumber());
+        LOGGER.debug("SERVICE: get customer by number passed");
+        if ( existingCustomer != null && existingCustomer.getCustomerId() != customer.getCustomerId()) {
+            LOGGER.debug("Throws illegalArgumentException");
+            throw new IllegalArgumentException(customer + " is present in DB");
+        }
         customerDao.updateCustomer(customer);
     }
 }

@@ -60,7 +60,12 @@ public class CustomerController {
         customer.setName(name);
         customer.setIdentificationNumber(pid);
 
-        customerService.updateCustomer(customer);
+        try {
+            customerService.updateCustomer(customer);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return new ModelAndView("error/addExistingCustomer");
+        }
         return new ModelAndView("redirect:/home", "customer", customer);
     }
 
@@ -99,7 +104,13 @@ public class CustomerController {
         customer.setName(name);
         customer.setIdentificationNumber(pid);
         LOGGER.debug("CONTROLLER: add customer={}", customer);
-        Long id = customerService.addCustomer(customer);
+        Long id = null;
+        try {
+            id = customerService.addCustomer(customer);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return new ModelAndView("error/addExistingCustomer");
+        }
         LOGGER.debug("CONTROLLER: new customer id = {}", id);
         return modelAndView;
     }

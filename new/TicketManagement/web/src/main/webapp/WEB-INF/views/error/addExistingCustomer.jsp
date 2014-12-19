@@ -6,7 +6,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <body>
-        <h2>Invalid date page</h2>
-	    <a href='<spring:url value="/newOrder" ></spring:url>'>back to new order page</a>
+        <h2>Customer with such identification number is present in database</h2>
+        <button onclick="goBack()">Go Back</button>
+
+        <script>
+        function goBack() {
+            window.history.back()
+        }
+        </script>
+<!--	    <a href='<spring:url value="/addCustomerForm" ></spring:url>'>back</a> -->
     </body>
 </html>

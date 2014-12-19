@@ -54,6 +54,15 @@
                 </table>
             </ul>
             <input type="submit" value="Place order">
+            <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+            <script>
+                if($("#customerId").prop("checked")==false) {
+                    alert('Choose customer');
+                }
+                if($("#ticketIdList").prop("checked")==false) {
+                    alert('Choose ticket(s)');
+                }
+            </script>
         </form>
     </body>
 </html>
