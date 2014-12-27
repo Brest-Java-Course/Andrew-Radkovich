@@ -71,15 +71,6 @@ public class TicketDaoImplTest {
     }
 
     @Test
-    public void selectNotTakenByDate() {
-
-        List<Ticket> ticketsOfSpecificDate = ticketDao.selectNotTakenByDate(Date.valueOf("2014-3-15"));
-        LOGGER.debug("amount of not taken tickets of specific date = {}", ticketsOfSpecificDate.size());//should be 4 here
-        assertNotNull(ticketsOfSpecificDate);
-        assertFalse(ticketsOfSpecificDate.isEmpty());
-    }
-
-    @Test
     public void selectNotTakenByDateAndTitle() {
 
         List<Ticket> ticketsOfSpecificDateAndTitle = ticketDao.selectNotTakenByDateAndTitle(Date.valueOf("2014-3-15"), "green mile");
@@ -95,6 +86,15 @@ public class TicketDaoImplTest {
         LOGGER.debug("amount of not taken tickets of specific title= {}", ticketsOfSpecificTitle.size());
         assertNotNull(ticketsOfSpecificTitle);
         assertFalse(ticketsOfSpecificTitle.isEmpty());
+    }
+
+    @Test
+    public void selectNotTakenBetweenDates() {
+
+        List<Ticket> tickets = ticketDao.selectNotTakenBetweenDates(Date.valueOf("2014-3-1"), Date.valueOf("2014-3-2"));
+        LOGGER.debug("amount of not taken tickets between dates = {}", tickets.size());
+        assertNotNull(tickets);
+        assertFalse(tickets.isEmpty());
     }
 
     @Test

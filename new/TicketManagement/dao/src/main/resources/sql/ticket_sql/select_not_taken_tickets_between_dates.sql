@@ -1,0 +1,3 @@
+SELECT * FROM TICKET
+WHERE TAKEN = FALSE
+AND data BETWEEN :dateLow AND :dateHigh;

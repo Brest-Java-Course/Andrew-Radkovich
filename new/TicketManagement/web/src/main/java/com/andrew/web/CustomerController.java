@@ -45,8 +45,10 @@ public class CustomerController {
 
         Customer customer = customerService.getCustomerById(id);
         List<Ticket> ticketsOfCustomer = ticketService.getTicketsOfCustomer(id);
+        Integer totalCost = ticketService.getTicketsSumOfCustomer(id).getTotalCost();
         ModelAndView modelAndView = new ModelAndView("edit", "customer", customer);
         modelAndView.addObject("ticketsOfCustomer", ticketsOfCustomer);
+        modelAndView.addObject("totalCost", totalCost);
         return modelAndView;
     }
 

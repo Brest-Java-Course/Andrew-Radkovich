@@ -2,9 +2,13 @@ package com.andrew.service;
 
 import com.andrew.dao.TicketDao;
 import com.andrew.ticket.Ticket;
+import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -13,72 +17,76 @@ import java.sql.Date;
 import java.util.List;
 
 import static com.andrew.service.TicketDataFixture.getAllTickets;
-import static org.easymock.EasyMock.*;
 import static com.andrew.service.TicketDataFixture.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by andrew on 30.11.14.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:/spring-services-mock-test.xml"})
 public class TicketServiceImplMockTest {
 
-    @Autowired
-    private TicketService ticketService;
+    @InjectMocks
+    private TicketServiceImpl ticketService;
 
-    @Autowired
+    @Mock
     private TicketDao ticketDao;
 
-    @After
-    public void clean() {
+    @Before
+    public void initMocks() {
 
-        reset(ticketDao);
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
     public void addTicket() {
 
         Ticket ticket = getNewTicket();
-        ticketDao.addTicket(ticket);
-        expectLastCall().andReturn(1L);
-        replay(ticketDao);
+
+        when(ticketDao.addTicket(ticket)).thenReturn(1L);
+
         Long id = ticketService.addTicket(ticket);
-        verify(ticketDao);
+        verify(ticketDao).addTicket(ticket);
         assertEquals(Long.valueOf(1), id);
     }
 
     @Test
     public void removeTicket() {
 
-        ticketDao.removeTicket(10L);
-        expectLastCall();
-        replay(ticketDao);
-        ticketService.removeTicket(10L);
-        verify(ticketDao);
+        doNothing().when(ticketDao).removeTicket(anyLong());
+
+        ticketService.removeTicket(anyLong());
+        verify(ticketDao).removeTicket(anyLong());
     }
 
     @Test
     public void getAllTicketsTest() {
 
         List<Ticket> allTickets = getAllTickets();
-        expect(ticketDao.selectAllTickets()).andReturn(allTickets);
-        replay(ticketDao);
+
+        when(ticketDao.selectAllTickets()).thenReturn(allTickets);
+
         List<Ticket> tickets = ticketService.selectAllTickets();
-        verify(ticketDao);
+        verify(ticketDao).selectAllTickets();
+
         assertFalse(tickets.isEmpty());
         assertEquals(tickets, allTickets);
     }
 
     @Test
-    public void getTicketsByDate() {
+    public void getNotTakenTicketsBetweenDates() {
 
         List<Ticket> allTickets = getAllTickets();
-        expect(ticketDao.selectNotTakenByDate(Date.valueOf("2014-9-9"))).andReturn(allTickets);
-        replay(ticketDao);
-        List<Ticket> notTakenTicketsOfSpecificDate = ticketService.selectNotTakenByDate(Date.valueOf("2014-9-9"));
-        verify(ticketDao);
+        Date dateLow = Date.valueOf("2014-3-1");
+        Date dateHigh = Date.valueOf("2014-9-12");
+
+        when(ticketDao.selectNotTakenBetweenDates(any(Date.class), any(Date.class))).thenReturn(allTickets);
+
+        List<Ticket> notTakenTicketsOfSpecificDate = ticketService.selectNotTakenBetweenDates(dateLow, dateHigh);
+
+        verify(ticketDao).selectNotTakenBetweenDates(any(Date.class), any(Date.class));
+
         assertFalse(notTakenTicketsOfSpecificDate.isEmpty());
         assertEquals(allTickets, notTakenTicketsOfSpecificDate);
     }

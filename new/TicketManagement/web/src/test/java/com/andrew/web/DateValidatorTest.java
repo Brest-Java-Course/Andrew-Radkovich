@@ -2,6 +2,8 @@ package com.andrew.web;
 
 import org.junit.Test;
 
+import java.sql.Date;
+
 import static com.andrew.web.DateValidator.isValidDate;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -29,5 +31,13 @@ public class DateValidatorTest {
     public void invalidDateTest() {
 
         assertFalse(isValidDate("2014-13-1"));
+    }
+
+    @Test
+    public void compareDatesTest() {
+
+        Date dateLow = Date.valueOf("2014-3-1");
+        Date dateHigh = Date.valueOf("2014-3-2");
+        assertTrue(dateLow.compareTo(dateHigh) < 0);
     }
 }

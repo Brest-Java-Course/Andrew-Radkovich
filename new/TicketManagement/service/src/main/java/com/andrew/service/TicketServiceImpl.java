@@ -67,10 +67,10 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<Ticket> selectNotTakenByDate(Date date) {
+    public List<Ticket> selectNotTakenBetweenDates(Date dateLow, Date dateHigh) {
 
-        LOGGER.debug("SERVICE: select not taken by date");
-        return ticketDao.selectNotTakenByDate(date);
+        LOGGER.debug("SERVICE: select not taken tickets between dates");
+        return ticketDao.selectNotTakenBetweenDates(dateLow, dateHigh);
     }
 
     @Override

@@ -58,26 +58,32 @@ public class TicketController {
     }
 
     @RequestMapping(value = "/filterByDateAndPid", method = RequestMethod.GET)
-    public ModelAndView filterByDate(@RequestParam("date")String date,
+    public ModelAndView filterByDate(@RequestParam("dateLow")String dateLowStr,
+                                     @RequestParam("dateHigh")String dateHighStr,
                                      @RequestParam("pid")String pid) {
 
-        Date dateOfPerformance = null;
+        Date dateLow = null;
+        Date dateHigh = null;
         Customer customer = null;
         ModelAndView view = new ModelAndView("newOrder");
-        if("".equals(date)) {
 
-            view.addObject("tickets", ticketService.selectNotTaken());
+        if( isValidDate(dateLowStr) && isValidDate(dateHighStr)) {
+            dateLow = Date.valueOf(dateLowStr);
+            dateHigh = Date.valueOf(dateHighStr);
+
+            if (dateLow.compareTo(dateHigh) > 0) {
+                //swap these dates
+                Date tempDate = dateLow;
+                dateLow = dateHigh;
+                dateHigh = tempDate;
+            }
+            view.addObject("tickets", ticketService.selectNotTakenBetweenDates(dateLow, dateHigh));
         }
         else {
-            if( isValidDate(date)) {
-                dateOfPerformance = Date.valueOf(date);
-                view.addObject("tickets", ticketService.selectNotTakenByDate(dateOfPerformance));
-            }
-            else {
-                ModelAndView invalidDateErrorView = new ModelAndView("error/invalidDate");
-                return invalidDateErrorView;
-            }
+            ModelAndView invalidDateErrorView = new ModelAndView("error/invalidDate");
+            return invalidDateErrorView;
         }
+
         if("".equals(pid)) {
             view.addObject("customers", customerService.getCustomers());
         }

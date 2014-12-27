@@ -16,7 +16,7 @@ public interface TicketService {
     public void removeTicket(Long ticketId);
     public List<Ticket> selectNotTaken();
     public List<Ticket> selectAllTickets();
-    public List<Ticket> selectNotTakenByDate(Date date);
+    public List<Ticket> selectNotTakenBetweenDates(Date dateLow, Date dateHigh);
     public List<Ticket> selectNotTakenByDateAndTitle(Date date, String title);
     public List<Ticket> selectNotTakenByTitle(String title);
     public List<Customer> getCustomersByDate(Date date);

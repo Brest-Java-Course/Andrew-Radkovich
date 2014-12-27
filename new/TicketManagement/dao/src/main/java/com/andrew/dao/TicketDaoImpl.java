@@ -43,6 +43,8 @@ public class TicketDaoImpl implements TicketDao {
     public static final String TAKEN = "taken";
     public static final String TOTAL_COST = "total_cost";
 
+    @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${select_not_taken_tickets_between_dates_path}')).inputStream)}")
+    public String selectNotTakenBetweenDatesSql;
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${insert_into_ticket_path}')).inputStream)}")
     public String addTicketSql;
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${remove_ticket_path}')).inputStream)}")
@@ -203,19 +205,20 @@ public class TicketDaoImpl implements TicketDao {
     }
 
     @Override
+    public List<Ticket> selectNotTakenBetweenDates(Date dateLow, Date dateHigh) {
+
+        LOGGER.debug("DAO: select not taken between dates");
+        Map<String, Date> stringDateMap = new HashMap<String, Date>(2);
+        stringDateMap.put("dateLow", dateLow);
+        stringDateMap.put("dateHigh", dateHigh);
+        return namedParameterJdbcTemplate.query(selectNotTakenBetweenDatesSql,stringDateMap, new TicketMapper());
+    }
+
+    @Override
     public List<Ticket> selectAllTickets() {
 
         LOGGER.debug("DAO: select all tickets");
         return namedParameterJdbcTemplate.query(selectAllTicketsSql, new TicketMapper());
-    }
-
-    @Override
-    public List<Ticket> selectNotTakenByDate(Date date) {
-
-        LOGGER.debug("DAO: select not taken by date={}", date);
-        Map<String, Date> parameter = new HashMap<String, Date>(1);
-        parameter.put(DATE, date);
-        return namedParameterJdbcTemplate.query(selectNotTakenByDateSql, parameter, new TicketMapper());
     }
 
     @Override

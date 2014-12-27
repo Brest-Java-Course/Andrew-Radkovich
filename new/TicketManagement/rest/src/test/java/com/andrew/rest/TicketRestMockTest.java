@@ -104,7 +104,7 @@ public class TicketRestMockTest {
                 ));
         verify(ticketService).getTicketsSumOfCustomer(1L);
     }
-
+/*
     @Test
     public void getNotTakenTicketsByDate() throws Exception {
 
@@ -120,7 +120,7 @@ public class TicketRestMockTest {
                 ));
         verify(ticketService).selectNotTakenByDate(Date.valueOf("2014-03-01"));
     }
-
+*/
     public static class TicketDataFixture {
 
         public static Ticket getExistingTakenTicket(Long id) {

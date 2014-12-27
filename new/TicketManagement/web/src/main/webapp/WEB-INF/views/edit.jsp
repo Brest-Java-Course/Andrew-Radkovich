@@ -20,6 +20,12 @@
             <input type="submit" name="customerId" value="${customer.customerId}"/>
         </form>
         <h3>Tickets of customer</h3>
+    <c:choose>
+        <c:when test="${ticketsOfCustomer.size() != 0}">
+            <h3>Total cost: ${totalCost}</h3>
+		<h3>Amount of tickets: ${ticketsOfCustomer.size()}</h3>
+        </c:when>
+    </c:choose>
         <ul>
                 <table border="1">
                     <tr>
@@ -28,14 +34,18 @@
                         <td>Cost</td>
                         <td>Location</td>
                     </tr>
-                    <c:forEach items="${ticketsOfCustomer}" var="ticket">
-                        <tr>
-                            <td>${ticket.title}</td>
-                            <td>${ticket.date}</td>
-                            <td>${ticket.cost}</td>
-                            <td>${ticket.location}</td>
-                        </tr>
-                    </c:forEach>
+                    <c:choose>
+                        <c:when test="${ticketsOfCustomer.size() != 0}">
+                            <c:forEach items="${ticketsOfCustomer}" var="ticket">
+                                <tr>
+                                    <td>${ticket.title}</td>
+                                    <td>${ticket.date}</td>
+                                    <td>${ticket.cost}</td>
+                                    <td>${ticket.location}</td>
+                                </tr>
+                            </c:forEach>
+                        </c:when>
+                    </c:choose>
                 </table>
             </ul>
     </body>

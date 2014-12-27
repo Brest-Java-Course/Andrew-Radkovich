@@ -56,9 +56,9 @@ public class TicketDataFixture {
 
     public static List<Ticket> getTicketsOfExistingCustomer(Long customerId) {
 
-        int size = 0;
+        int size = 2;
         List<Ticket> tickets = new ArrayList<Ticket>(size);
-        for(int i = 0; i < size; i++) {
+        for(int i = 1; i <= size; i++) {
             Ticket ticket = new Ticket();
             ticket.setTicketId(Long.valueOf(i));
             ticket.setCustomerId(customerId);
@@ -66,6 +66,24 @@ public class TicketDataFixture {
             ticket.setTaken(Boolean.TRUE);
             ticket.setLocation(Long.valueOf(i).intValue());
             ticket.setDate(Date.valueOf("2014-1-1"));
+            ticket.setTitle("The Dark Knight");
+            tickets.add(ticket);
+        }
+        return tickets;
+    }
+
+    public static List<Ticket> selectTicketsWithSameDate(Date date) {
+
+        int size = 5;
+        List<Ticket> tickets = new ArrayList<Ticket>(size);
+        for(int i = 0; i < size; i++) {
+            Ticket ticket = new Ticket();
+            ticket.setTicketId(Long.valueOf(i + 1));
+            ticket.setCustomerId(1L);
+            ticket.setCost(1000);
+            ticket.setTaken(Boolean.TRUE);
+            ticket.setLocation(Long.valueOf(i).intValue());
+            ticket.setDate(date);
             ticket.setTitle("The Dark Knight");
             tickets.add(ticket);
         }

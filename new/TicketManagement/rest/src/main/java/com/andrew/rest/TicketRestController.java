@@ -54,14 +54,6 @@ public class TicketRestController {
         return new ResponseEntity<List<Ticket>>(tickets, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/notTaken/date/{date}", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<List<Ticket>> getNotTakenByDate(@PathVariable String date) {
-
-        List<Ticket> tickets = ticketService.selectNotTakenByDate(Date.valueOf(date));
-        return new ResponseEntity(tickets, HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/notTaken/title/{title}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<Ticket>> getNotTakenTicketsByTitle(@PathVariable String title) {
