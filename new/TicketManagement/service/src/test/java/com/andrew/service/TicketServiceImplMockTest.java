@@ -1,6 +1,7 @@
 package com.andrew.service;
 
 import com.andrew.dao.TicketDao;
+import com.andrew.service.exception.InvalidDateException;
 import com.andrew.ticket.Ticket;
 import org.junit.Before;
 import org.junit.After;
@@ -83,11 +84,22 @@ public class TicketServiceImplMockTest {
 
         when(ticketDao.selectNotTakenBetweenDates(any(Date.class), any(Date.class))).thenReturn(allTickets);
 
-        List<Ticket> notTakenTicketsOfSpecificDate = ticketService.selectNotTakenBetweenDates(dateLow, dateHigh);
+        List<Ticket> notTakenTicketsOfBetweenDates = ticketService.selectNotTakenBetweenDates("2014-3-1", "2014-3-1");
 
         verify(ticketDao).selectNotTakenBetweenDates(any(Date.class), any(Date.class));
 
-        assertFalse(notTakenTicketsOfSpecificDate.isEmpty());
-        assertEquals(allTickets, notTakenTicketsOfSpecificDate);
+        assertFalse(notTakenTicketsOfBetweenDates.isEmpty());
+        assertEquals(allTickets, notTakenTicketsOfBetweenDates);
+    }
+
+    @Test(expected = InvalidDateException.class)
+    public void getNotTakenTicketsBetweenDatesThrowsException() {
+
+        when(ticketDao.selectNotTakenBetweenDates(any(Date.class), any(Date.class)))
+                .thenThrow(new InvalidDateException("Error parsing dates: ", "some dates"));
+
+        List<Ticket> notTakenTicketsOfBetweenDates = ticketService.selectNotTakenBetweenDates("2014-3-1", "2014-9-121");
+
+        verify(ticketDao).selectNotTakenBetweenDates(any(Date.class), any(Date.class));
     }
 }

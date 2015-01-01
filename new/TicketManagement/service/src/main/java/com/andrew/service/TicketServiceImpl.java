@@ -3,6 +3,7 @@ package com.andrew.service;
 import com.andrew.TotalCost.TotalCustomerCost;
 import com.andrew.customer.Customer;
 import com.andrew.dao.TicketDao;
+import com.andrew.service.exception.InvalidDateException;
 import com.andrew.ticket.Ticket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +14,8 @@ import org.springframework.util.Assert;
 
 import java.sql.Date;
 import java.util.List;
+
+import static com.andrew.service.DateValidator.isValidDate;
 
 /**
  * Created by andrew on 30.11.14.
@@ -67,9 +70,27 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<Ticket> selectNotTakenBetweenDates(Date dateLow, Date dateHigh) {
+    public List<Ticket> selectNotTakenBetweenDates(String dateLowStr, String dateHighStr) throws InvalidDateException {
 
         LOGGER.debug("SERVICE: select not taken tickets between dates");
+
+        Date dateLow = null;
+        Date dateHigh = null;
+
+        if(isValidDate(dateLowStr) && isValidDate(dateHighStr)) {
+            dateLow = Date.valueOf(dateLowStr);
+            dateHigh = Date.valueOf(dateHighStr);
+
+            if (dateLow.compareTo(dateHigh) > 0) {
+                //swap these dates
+                Date tempDate = dateLow;
+                dateLow = dateHigh;
+                dateHigh = tempDate;
+            }
+        }
+        else {
+            throw new InvalidDateException("error: parsing dates",dateHighStr + dateLowStr);
+        }
         return ticketDao.selectNotTakenBetweenDates(dateLow, dateHigh);
     }
 

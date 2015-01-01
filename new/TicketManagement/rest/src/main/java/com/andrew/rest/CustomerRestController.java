@@ -66,7 +66,7 @@ public class CustomerRestController {
     public ResponseEntity updateCustomer(@RequestBody Customer customer) {
 
         customerService.updateCustomer(customer);
-        return new ResponseEntity("", HttpStatus.OK);
+        return new ResponseEntity("updated: " + customer.getCustomerId(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
@@ -74,6 +74,6 @@ public class CustomerRestController {
     public ResponseEntity removeCustomer(@PathVariable Long id) {
 
         customerService.removeCustomer(id);
-        return new ResponseEntity("deleted" + id, HttpStatus.OK);
+        return new ResponseEntity("deleted: " + id, HttpStatus.OK);
     }
 }

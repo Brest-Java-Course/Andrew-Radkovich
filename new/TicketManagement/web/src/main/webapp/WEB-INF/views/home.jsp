@@ -34,6 +34,12 @@
     <form action="addCustomerForm" method="GET">
         <input type="submit" value="Add Customer"/>
     </form>
+
+    <h3>Create tickets</h3>
+    <form action="createTicketsForm" method="GET">
+        <input type="submit" value="Create tickets"/>
+    </form>
+
     <h3>New order</h3>
     <form action="newOrder" method="GET">
         <input type="submit" value="New order"/>

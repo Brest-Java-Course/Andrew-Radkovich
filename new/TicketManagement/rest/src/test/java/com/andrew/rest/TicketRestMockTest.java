@@ -3,6 +3,7 @@ package com.andrew.rest;
 import com.andrew.TotalCost.TotalCustomerCost;
 import com.andrew.service.CustomerService;
 import com.andrew.service.TicketService;
+import com.andrew.service.exception.InvalidDateException;
 import com.andrew.ticket.Ticket;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +48,7 @@ public class TicketRestMockTest {
     }
 
     @Test
-    public void getTicketByIdRestTest() throws Exception {
+    public void getTicketByIdRestTestMockTest() throws Exception {
 
         Ticket ticket = getExistingTakenTicket(1L);
         when(ticketService.selectTicketById(1L)).thenReturn(ticket);
@@ -60,7 +61,7 @@ public class TicketRestMockTest {
     }
 
     @Test
-    public void getAllTickets() throws Exception {
+    public void getAllTicketsMockTest() throws Exception {
 
         List<Ticket> expectedTickets = TicketDataFixture.getAllTickets();
         when(ticketService.selectAllTickets()).thenReturn(expectedTickets);
@@ -76,7 +77,7 @@ public class TicketRestMockTest {
     }
 
     @Test
-    public void getTicketsOfCustomer() throws Exception {
+    public void getTicketsOfCustomerMockTest() throws Exception {
 
         List<Ticket> expectedTicketsOfCustomer = TicketDataFixture.getTicketsOfCustomer(1L);
         when(ticketService.getTicketsOfCustomer(1L)).thenReturn(expectedTicketsOfCustomer);
@@ -92,7 +93,7 @@ public class TicketRestMockTest {
     }
 
     @Test
-    public void getTicketSumOfCustomer() throws Exception {
+    public void getTicketSumOfCustomerMockTest() throws Exception {
 
         TotalCustomerCost cost = TicketDataFixture.getTicketsSumOfCustomer();
         when(ticketService.getTicketsSumOfCustomer(1L)).thenReturn(cost);
@@ -104,13 +105,13 @@ public class TicketRestMockTest {
                 ));
         verify(ticketService).getTicketsSumOfCustomer(1L);
     }
-/*
+
     @Test
-    public void getNotTakenTicketsByDate() throws Exception {
+    public void getNotTakenTicketsBetweenDatesMockTest() throws  Exception {
 
         List<Ticket> tickets = TicketDataFixture.getNotTakenTickets();
-        when(ticketService.selectNotTakenByDate(Date.valueOf("2014-03-01"))).thenReturn(tickets);
-        mockMvc.perform(get("/rest/ticket/notTaken/date/2014-03-01").accept(MediaType.APPLICATION_JSON))
+        when(ticketService.selectNotTakenBetweenDates("2014-3-1", "2014-3-2")).thenReturn(tickets);
+        mockMvc.perform(get("/rest/ticket/notTaken/between/2014-3-1/2014-3-2").accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(
@@ -118,9 +119,23 @@ public class TicketRestMockTest {
                                 "{\"ticketId\":2,\"cost\":1500,\"location\":1,\"date\":\"2014-03-01\",\"title\":\"title2\",\"taken\":false,\"customerId\":null}," +
                                 "{\"ticketId\":3,\"cost\":1500,\"location\":1,\"date\":\"2014-03-01\",\"title\":\"title3\",\"taken\":false,\"customerId\":null}]"
                 ));
-        verify(ticketService).selectNotTakenByDate(Date.valueOf("2014-03-01"));
+        verify(ticketService).selectNotTakenBetweenDates("2014-3-1", "2014-3-2");
     }
-*/
+
+    @Test
+    public void getNotTakenTicketsBetweenWrongDatesMockTest() throws  Exception {
+
+        List<Ticket> tickets = TicketDataFixture.getNotTakenTickets();
+        when(ticketService.selectNotTakenBetweenDates("2014-33-1", "2014-3-2"))
+                .thenThrow(new InvalidDateException("error parsing dates", "2014-33-1 2014-3-2"));
+
+        mockMvc.perform(get("/rest/ticket/notTaken/between/2014-33-1/2014-3-2").accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+        verify(ticketService).selectNotTakenBetweenDates("2014-33-1", "2014-3-2");
+    }
+
     public static class TicketDataFixture {
 
         public static Ticket getExistingTakenTicket(Long id) {

@@ -9,8 +9,8 @@
         <a href=".">to main page</a></br></br>
         <form action="filterByDateAndPid" method="GET" onsubmit="return checkDates(this);">
 	    <label>PID: <input type="text" name="pid"></label>
-	    <p><label>First Date: <input type="text" size="12" required pattern="\d{4}-\d{1,2}-\d{1,2}" placeholder="yyyy-mm-dd" name="dateLow"></label></p>
-	    <p><label>Last Date: <input type="text" size="12" required pattern="\d{4}-\d{1,2}-\d{1,2}"  placeholder="yyyy-mm-dd" name="dateHigh"></label></p>
+	    <p><label>First Date: <input type="text" size="12" pattern="^\d+$|\d{4}-\d{1,2}-\d{1,2}" placeholder="yyyy-mm-dd" name="dateLow"></label></p>
+	    <p><label>Last Date: <input type="text" size="12" pattern="^\d+$|\d{4}-\d{1,2}-\d{1,2}"  placeholder="yyyy-mm-dd" name="dateHigh"></label></p>
 	    <p><input type="submit"></p>
         </form>
         <form action="placeOrder" method="GET" onsubmit="return isValuesChecked(this);">
@@ -163,10 +163,14 @@
                 }
                 return true;
             }
-            function checkDates(form) {
+        function checkForm(form) {
 
-                return isValidDate(form.dateLow.value) && isValidDate(form.dateHigh.value);
+            if("" == form.dateFirst.value || "" == form.dateLast.value) {
+                form.dateFirst.value = form.dateLast.value = "";
+                return true;
             }
+            return isValidDate(form.dateFirst.value) && isValidDate(form.dateLast.value);
+        }
         </script>
     </body>
 </html>

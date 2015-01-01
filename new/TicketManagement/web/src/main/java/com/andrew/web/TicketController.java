@@ -3,6 +3,7 @@ package com.andrew.web;
 import com.andrew.customer.Customer;
 import com.andrew.service.CustomerService;
 import com.andrew.service.TicketService;
+import com.andrew.service.exception.InvalidDateException;
 import com.andrew.ticket.Ticket;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,40 @@ public class TicketController {
     @Autowired
     private TicketService ticketService;
 
+    @RequestMapping(value = "/createTicketsForm", method = RequestMethod.GET)
+    public ModelAndView getCreateTicketsForm() {
+
+        ModelAndView view = new ModelAndView("createTicketsForm");
+        return view;
+    }
+
+    @RequestMapping(value = "/createTickets", method = RequestMethod.POST)
+    public ModelAndView createTickets(@RequestParam("title")String title,
+                                      @RequestParam("locations")Integer locations,
+                                      @RequestParam("date")String dateStr,
+                                      @RequestParam("cost")Integer cost) {
+
+        if(!isValidDate(dateStr)) {
+
+            return new ModelAndView("error/invalidDate");
+        }
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/home");
+
+        Ticket newTicket = new Ticket();
+        newTicket.setCost(cost);
+        newTicket.setCustomerId(null);
+        newTicket.setTaken(Boolean.FALSE);
+        newTicket.setDate(Date.valueOf(dateStr));
+        newTicket.setTitle(title);
+        for(int i = 0; i < locations; i++) {
+            newTicket.setLocation(i + 1);
+            ticketService.addTicket(newTicket);
+        }
+
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/newOrder", method = RequestMethod.GET)
     public ModelAndView newOrder() {
 
@@ -60,28 +95,24 @@ public class TicketController {
     @RequestMapping(value = "/filterByDateAndPid", method = RequestMethod.GET)
     public ModelAndView filterByDate(@RequestParam("dateLow")String dateLowStr,
                                      @RequestParam("dateHigh")String dateHighStr,
-                                     @RequestParam("pid")String pid) {
+                                     @RequestParam("pid")String pid) throws InvalidDateException{
 
         Date dateLow = null;
         Date dateHigh = null;
         Customer customer = null;
         ModelAndView view = new ModelAndView("newOrder");
 
-        if( isValidDate(dateLowStr) && isValidDate(dateHighStr)) {
-            dateLow = Date.valueOf(dateLowStr);
-            dateHigh = Date.valueOf(dateHighStr);
-
-            if (dateLow.compareTo(dateHigh) > 0) {
-                //swap these dates
-                Date tempDate = dateLow;
-                dateLow = dateHigh;
-                dateHigh = tempDate;
-            }
-            view.addObject("tickets", ticketService.selectNotTakenBetweenDates(dateLow, dateHigh));
+        if("".equals(dateLowStr) || "".equals(dateHighStr)) {
+            view.addObject("tickets", ticketService.selectNotTaken());
         }
         else {
-            ModelAndView invalidDateErrorView = new ModelAndView("error/invalidDate");
-            return invalidDateErrorView;
+
+            try {
+                view.addObject("tickets", ticketService.selectNotTakenBetweenDates(dateLowStr, dateHighStr));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ModelAndView("invalidDate");
+            }
         }
 
         if("".equals(pid)) {
