@@ -136,6 +136,17 @@ public class TicketRestMockTest {
         verify(ticketService).selectNotTakenBetweenDates("2014-33-1", "2014-3-2");
     }
 
+    @Test
+    public void updateTicketsWhenCustomerRemoved() throws Exception {
+
+        doNothing().when(ticketService).updateTicketsWhenCustomerRemoved(anyLong());
+
+        mockMvc.perform(put("/rest/ticket/update/whenCustomerRemoved/1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(ticketService).updateTicketsWhenCustomerRemoved(anyLong());
+    }
+
     public static class TicketDataFixture {
 
         public static Ticket getExistingTakenTicket(Long id) {

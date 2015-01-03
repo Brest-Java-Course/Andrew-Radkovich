@@ -32,12 +32,4 @@ public class DateValidatorTest {
 
         assertFalse(isValidDate("2014-13-1"));
     }
-
-    @Test
-    public void compareDatesTest() {
-
-        Date dateLow = Date.valueOf("2014-3-1");
-        Date dateHigh = Date.valueOf("2014-3-2");
-        assertTrue(dateLow.compareTo(dateHigh) < 0);
-    }
 }

@@ -112,6 +112,19 @@ public class Ticket {
     }
 
     @Override
+    public int hashCode() {
+
+        int result = ticketId.hashCode();
+        result = 31 * result + cost.hashCode();
+        result = 31 * result + location.hashCode();
+        result = 31 * result + date.hashCode();
+        result = 31 * result + title.hashCode();
+        result = 31 * result + taken.hashCode();
+        result = 31 * result + (customerId != null ? customerId.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
 
         StringBuilder sb = new StringBuilder("Ticket{");

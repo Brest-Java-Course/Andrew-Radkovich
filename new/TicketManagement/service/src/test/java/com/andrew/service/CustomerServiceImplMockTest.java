@@ -60,16 +60,13 @@ public class CustomerServiceImplMockTest {
     public void removeCustomer() {
 
         Customer customer = getExistingCustomer();
-        List<Ticket> tickets = getTicketsOfExistingCustomer(customer.getCustomerId());
 
-        when(ticketDao.getTicketsOfCustomer(customer.getCustomerId())).thenReturn(tickets);
-        doNothing().when(ticketDao).updateTicketSetTakenFalse(anyLong());
+        doNothing().when(ticketDao).updateTicketsWhenCustomerRemoved(anyLong());
         doNothing().when(customerDao).removeCustomer(anyLong());
 
         customerService.removeCustomer(customer.getCustomerId());
         verify(customerDao).removeCustomer(anyLong());
-        verify(ticketDao, times(2)).updateTicketSetTakenFalse(anyLong());
-        verify(ticketDao).getTicketsOfCustomer(customer.getCustomerId());
+        verify(ticketDao).updateTicketsWhenCustomerRemoved(anyLong());
     }
 
     @Test

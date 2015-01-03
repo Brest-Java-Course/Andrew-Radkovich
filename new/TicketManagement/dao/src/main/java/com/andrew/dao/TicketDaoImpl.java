@@ -75,6 +75,8 @@ public class TicketDaoImpl implements TicketDao {
     public String updateSetTakenTrueTicketSql;
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${update_set_taken_false_path}')).inputStream)}")
     public String updateSetTakenFalseTicketSql;
+    @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${update_if_customer_was_removed_path}')).inputStream)}")
+    public String updateTicketsIfCustomerWasRemovedSql;
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -160,6 +162,8 @@ public class TicketDaoImpl implements TicketDao {
         namedParameterJdbcTemplate.update(updateTicketSql, parameters);
     }
 
+
+
     @Override
     public void updateSetTakenTrue(Long ticketId, Long customerId) {
 
@@ -186,6 +190,15 @@ public class TicketDaoImpl implements TicketDao {
         Map<String, Long> parameter = new HashMap<String, Long>(1);
         parameter.put(TICKET_ID, ticketId);
         namedParameterJdbcTemplate.update(updateSetTakenFalseTicketSql, parameter);
+    }
+
+    @Override
+    public void updateTicketsWhenCustomerRemoved(Long customerId) {
+
+        LOGGER.debug("DAO: set NOT TAKEN to tickets with customerId = {}", customerId);
+        Map<String, Long> parameter = new HashMap<String, Long>(1);
+        parameter.put(CUSTOMER_ID, customerId);
+        namedParameterJdbcTemplate.update(updateTicketsIfCustomerWasRemovedSql, parameter);
     }
 
     @Override

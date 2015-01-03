@@ -66,6 +66,15 @@ public class Customer {
     }
 
     @Override
+    public int hashCode() {
+
+        int result = customerId.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + identificationNumber.hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
 
         StringBuilder sb = new StringBuilder("Customer{");

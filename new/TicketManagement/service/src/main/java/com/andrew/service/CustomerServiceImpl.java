@@ -62,11 +62,13 @@ public class CustomerServiceImpl implements CustomerService {
     public void removeCustomer(Long customerId) {
 
         LOGGER.debug("SERVICE: remove customer with id = {}", customerId);
-        List<Ticket> tickets = ticketDao.getTicketsOfCustomer(customerId);
+        /*List<Ticket> tickets = ticketDao.getTicketsOfCustomer(customerId);
         for(Ticket ticket : tickets) {
             LOGGER.debug("SERVICE: set NOT TAKEN to ticket with id={}", ticket.getTicketId());
             ticketDao.updateTicketSetTakenFalse(ticket.getTicketId());
-        }
+        }*/
+
+        ticketDao.updateTicketsWhenCustomerRemoved(customerId);
         customerDao.removeCustomer(customerId);
     }
 

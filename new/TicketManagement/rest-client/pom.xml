@@ -50,10 +50,6 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
@@ -89,7 +85,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.andrew.client.RestClientDemo</mainClass>
+                            <mainClass>com.andrew.client.rest.RestClientDemo</mainClass>
                         </manifest>
                     </archive>
 

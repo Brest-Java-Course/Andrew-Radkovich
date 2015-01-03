@@ -1,0 +1,36 @@
+2015-01-03 23:08:21,419 [main] REST CLIENT: get customer by number = AB1
+2015-01-03 23:08:21,419 [main] REST CLIENT: get customer by number = AB1
+2015-01-03 23:08:21,510 [main] REST CLIENT: get all customers
+2015-01-03 23:08:21,510 [main] REST CLIENT: get all customers
+2015-01-03 23:08:21,523 [main] REST CLIENT: remove customer with id = 1
+2015-01-03 23:08:21,523 [main] REST CLIENT: remove customer with id = 1
+2015-01-03 23:08:21,540 [main] REST CLIENT: add customer = Customer{customerId=null, name='name5', identificationNumber='number5'}
+2015-01-03 23:08:21,540 [main] REST CLIENT: add customer = Customer{customerId=null, name='name5', identificationNumber='number5'}
+2015-01-03 23:08:21,559 [main] REST CLIENT: update customer = Customer{customerId=1, name='name1', identificationNumber='number1'}
+2015-01-03 23:08:21,559 [main] REST CLIENT: update customer = Customer{customerId=1, name='name1', identificationNumber='number1'}
+2015-01-03 23:08:21,576 [main] REST CLIENT: get customer by id = 1
+2015-01-03 23:08:21,576 [main] REST CLIENT: get customer by id = 1
+2015-01-04 00:39:40,826 [main] REST CLIENT: get customer by number = AB1
+2015-01-04 00:39:40,826 [main] REST CLIENT: get customer by number = AB1
+2015-01-04 00:39:40,908 [main] REST CLIENT: get all customers
+2015-01-04 00:39:40,908 [main] REST CLIENT: get all customers
+2015-01-04 00:39:40,920 [main] REST CLIENT: remove customer with id = 1
+2015-01-04 00:39:40,920 [main] REST CLIENT: remove customer with id = 1
+2015-01-04 00:39:40,933 [main] REST CLIENT: add customer = Customer{customerId=null, name='name5', identificationNumber='number5'}
+2015-01-04 00:39:40,933 [main] REST CLIENT: add customer = Customer{customerId=null, name='name5', identificationNumber='number5'}
+2015-01-04 00:39:40,952 [main] REST CLIENT: update customer = Customer{customerId=1, name='name1', identificationNumber='number1'}
+2015-01-04 00:39:40,952 [main] REST CLIENT: update customer = Customer{customerId=1, name='name1', identificationNumber='number1'}
+2015-01-04 00:39:40,964 [main] REST CLIENT: get customer by id = 1
+2015-01-04 00:39:40,964 [main] REST CLIENT: get customer by id = 1
+2015-01-04 02:18:08,218 [main] REST CLIENT: get customer by number = AB1
+2015-01-04 02:18:08,218 [main] REST CLIENT: get customer by number = AB1
+2015-01-04 02:18:08,352 [main] REST CLIENT: get all customers
+2015-01-04 02:18:08,352 [main] REST CLIENT: get all customers
+2015-01-04 02:18:08,365 [main] REST CLIENT: remove customer with id = 1
+2015-01-04 02:18:08,365 [main] REST CLIENT: remove customer with id = 1
+2015-01-04 02:18:08,395 [main] REST CLIENT: add customer = Customer{customerId=null, name='name5', identificationNumber='number5'}
+2015-01-04 02:18:08,395 [main] REST CLIENT: add customer = Customer{customerId=null, name='name5', identificationNumber='number5'}
+2015-01-04 02:18:08,415 [main] REST CLIENT: update customer = Customer{customerId=1, name='name1', identificationNumber='number1'}
+2015-01-04 02:18:08,415 [main] REST CLIENT: update customer = Customer{customerId=1, name='name1', identificationNumber='number1'}
+2015-01-04 02:18:08,428 [main] REST CLIENT: get customer by id = 1
+2015-01-04 02:18:08,428 [main] REST CLIENT: get customer by id = 1

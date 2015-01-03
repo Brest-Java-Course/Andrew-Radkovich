@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.sql.Date;
 import java.util.List;
@@ -93,5 +91,30 @@ public class TicketRestController {
         TotalCustomerCost cost = ticketService.getTicketsSumOfCustomer(id);
         Integer sum = cost.getTotalCost();
         return new ResponseEntity<Integer>(sum, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/update/whenCustomerRemoved/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity updateTicketsWhenCustomerRemoved(@PathVariable Long id) {
+
+        ticketService.updateTicketsWhenCustomerRemoved(id);
+        return new ResponseEntity("", HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Long> addTicket(@RequestBody Ticket ticket) {
+
+        Long id = ticketService.addTicket(ticket);
+        return new ResponseEntity<Long>(id, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/update/setTakenTrue/{ticketId}/{customerId}", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseEntity sellTicketToCustomer(@PathVariable Long ticketId,
+                                               @PathVariable Long customerId) {
+
+        ticketService.updateSetTakenTrue(ticketId, customerId);
+        return new ResponseEntity("sold to customer({})" + customerId, HttpStatus.OK);
     }
 }

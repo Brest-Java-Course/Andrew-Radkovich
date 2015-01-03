@@ -174,6 +174,18 @@ public class TicketDaoImplTest {
     }
 
     @Test
+    public void updateTicketsWhenCustomerRemovedTest() {
+
+        List<Ticket> notTakenTickets = ticketDao.selectNotTaken();
+        int sizeBefore = notTakenTickets.size();
+        List<Ticket> ticketsOfCustomer = ticketDao.getTicketsOfCustomer(4L);
+        int customerTicketsSize = ticketsOfCustomer.size();
+        ticketDao.updateTicketsWhenCustomerRemoved(4L);
+        int sizeAfter = ticketDao.selectNotTaken().size();
+        assertEquals(sizeBefore + customerTicketsSize, sizeAfter);
+    }
+
+    @Test
     public void getTicketsSumOfCustomer() {
 
         Integer ticketCost1 = 1000;

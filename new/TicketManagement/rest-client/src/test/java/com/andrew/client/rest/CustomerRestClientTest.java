@@ -1,4 +1,4 @@
-package com.andrew.client;
+package com.andrew.client.rest;
 
 import com.andrew.customer.Customer;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -9,14 +9,12 @@ import org.junit.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.web.servlet.view.JstlView;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.andrew.client.CustomerRestClientTest.CustomerDataFixture.getCustomers;
-import static com.andrew.client.CustomerRestClientTest.CustomerDataFixture.getExistingCustomer;
+import static com.andrew.client.rest.CustomerRestClientTest.CustomerDataFixture.getCustomers;
+import static com.andrew.client.rest.CustomerRestClientTest.CustomerDataFixture.getExistingCustomer;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;

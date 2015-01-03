@@ -1,4 +1,4 @@
-package com.andrew.client;
+package com.andrew.client.rest;
 
 import com.andrew.customer.Customer;
 import org.apache.logging.log4j.LogManager;
@@ -31,7 +31,7 @@ public class CustomerRestClient {
         this.restTemplate = restTemplate;
     }
 
-   CustomerRestClient(String host) {
+   public CustomerRestClient(String host) {
 
        this.host = host;
        List<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>();

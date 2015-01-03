@@ -1,4 +1,4 @@
-package com.andrew.client;
+package com.andrew.client.rest;
 
 import com.andrew.TotalCost.TotalCustomerCost;
 import com.andrew.ticket.Ticket;
@@ -15,7 +15,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.andrew.client.TicketRestClientTest.TicketDataFixture.*;
+import static com.andrew.client.rest.TicketRestClientTest.TicketDataFixture.*;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -103,6 +103,15 @@ public class TicketRestClientTest {
 
         Integer sum = ticketRestClient.getTicketSumOfCustomer(1L);
         assertEquals(sum, totalCost);
+    }
+
+    @Test
+    public void updateTicketWhenCustomerRemovedRestTest() {
+
+        server.expect(requestTo(HOST + TICKET_ROOT_PATH + "update/whenCustomerRemoved/1"))
+                .andExpect(method(HttpMethod.PUT))
+                .andRespond(withSuccess("", MediaType.APPLICATION_JSON));
+        ticketRestClient.updateTicketsWhenCustomerRemoved(1L);
     }
 
     public static class TicketDataFixture {

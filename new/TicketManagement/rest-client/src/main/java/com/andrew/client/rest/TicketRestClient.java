@@ -1,4 +1,4 @@
-package com.andrew.client;
+package com.andrew.client.rest;
 
 import com.andrew.ticket.Ticket;
 import org.apache.logging.log4j.LogManager;
@@ -34,7 +34,7 @@ public class TicketRestClient {
     public TicketRestClient(String host) {
 
         this.host = host;
-        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
         messageConverters.add(new MappingJackson2HttpMessageConverter());
         restTemplate.setMessageConverters(messageConverters);
     }
@@ -64,5 +64,18 @@ public class TicketRestClient {
         return restTemplate.getForObject(host + TICKET_ROOT_PATH + "sum/ofCustomer/" + customerId, Integer.class);
     }
 
+    public void updateTicketsWhenCustomerRemoved(Long customerId) {
 
+        restTemplate.put(host + TICKET_ROOT_PATH + "update/whenCustomerRemoved/" + customerId, customerId);
+    }
+
+    public Long addTicket(Ticket ticket) {
+
+        return restTemplate.postForObject(host + TICKET_ROOT_PATH + "create", ticket, Long.class);
+    }
+
+    public void updateTicketSetTakenTrue(Long ticketId, Long customerId) {
+
+        restTemplate.put(host + TICKET_ROOT_PATH + "update/setTakenTrue/" + ticketId + "/" + customerId, ticketId, customerId);
+    }
 }

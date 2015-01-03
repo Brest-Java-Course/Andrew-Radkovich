@@ -27,4 +27,5 @@ public interface TicketDao {
     public void updateSetTakenTrue(Long ticketId, Long customerId);
     public Ticket selectTicketById(Long ticketId);
     public void updateTicketSetTakenFalse(Long ticketId);
+    public void updateTicketsWhenCustomerRemoved(Long customerId);
 }

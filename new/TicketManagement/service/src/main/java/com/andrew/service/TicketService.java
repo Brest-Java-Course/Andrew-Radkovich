@@ -25,5 +25,6 @@ public interface TicketService {
     public TotalCustomerCost getTicketsSumOfCustomer(Long customerId);
     public void updateTicket(Ticket ticket);
     public void updateSetTakenTrue(Long ticketId, Long customerId);
+    public void updateTicketsWhenCustomerRemoved(Long customerId);
     public Ticket selectTicketById(Long ticketId);
 }

@@ -102,4 +102,14 @@ public class TicketServiceImplMockTest {
 
         verify(ticketDao).selectNotTakenBetweenDates(any(Date.class), any(Date.class));
     }
+
+    @Test
+    public void updateTicketsWhenCustomerRemovedMockTest() {
+
+        doNothing().when(ticketDao).updateTicketsWhenCustomerRemoved(any(Long.class));
+
+        ticketService.updateTicketsWhenCustomerRemoved(any(Long.class));
+
+        verify(ticketDao).updateTicketsWhenCustomerRemoved(any(Long.class));
+    }
 }

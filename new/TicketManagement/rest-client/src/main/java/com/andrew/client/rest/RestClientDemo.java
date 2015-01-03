@@ -1,4 +1,4 @@
-package com.andrew.client;
+package com.andrew.client.rest;
 
 import com.andrew.customer.Customer;
 import org.apache.logging.log4j.LogManager;

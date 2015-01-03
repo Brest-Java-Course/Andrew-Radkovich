@@ -151,6 +151,12 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public void updateTicketsWhenCustomerRemoved(Long customerId) {
+        LOGGER.debug("SERVICE: update tickets when customer removed");
+        ticketDao.updateTicketsWhenCustomerRemoved(customerId);
+    }
+
+    @Override
     public Ticket selectTicketById(Long ticketId) {
 
         LOGGER.debug("SERVICE: select ticket by id={}", ticketId);
