@@ -45,7 +45,7 @@ public class CustomerServiceImplMockTest {
     }
     
     @Test
-    public void addCustomer() {
+    public void addCustomerTest() {
 
         Customer customer = getNewCustomer();
         when(customerDao.addCustomer(customer)).thenReturn(1L);
@@ -57,7 +57,7 @@ public class CustomerServiceImplMockTest {
     }
 
     @Test
-    public void removeCustomer() {
+    public void removeCustomerTest() {
 
         Customer customer = getExistingCustomer();
 
@@ -70,7 +70,7 @@ public class CustomerServiceImplMockTest {
     }
 
     @Test
-    public void updateCustomer() {
+    public void updateCustomerTest() {
 
         Customer customer = getExistingCustomer();
         Customer newCustomer = customer;
@@ -85,5 +85,25 @@ public class CustomerServiceImplMockTest {
         verify(customerDao).getCustomerByNumber(customer.getIdentificationNumber());
         verify(customerDao).updateCustomer(customer);
         verify(customerDao).getCustomerById(customer.getCustomerId());
+    }
+
+    @Test
+    public void checkExistingCustomerByNumberTest() {
+
+        when(customerDao.getCustomerByNumber(anyString())).thenReturn(new Customer());
+
+        Boolean exists = customerService.checkExistingCustomerByNumber(anyString());
+        verify(customerDao).getCustomerByNumber(anyString());
+        assertEquals(Boolean.TRUE, exists);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void checkNotExistingCustomerByNumber() {
+
+        when(customerDao.getCustomerByNumber(anyString())).thenThrow(new IllegalArgumentException());
+
+        Boolean exists = customerService.checkExistingCustomerByNumber(anyString());
+        verify(customerDao).getCustomerByNumber(anyString());
+        assertEquals(Boolean.FALSE, exists);
     }
 }

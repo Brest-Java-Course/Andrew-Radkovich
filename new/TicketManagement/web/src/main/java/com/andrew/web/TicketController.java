@@ -17,7 +17,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static com.andrew.web.DateValidator.isValidDate;
+import static com.andrew.service.DateValidator.isValidDate;
 import static java.util.Arrays.asList;
 
 /**

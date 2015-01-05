@@ -87,4 +87,10 @@ public class CustomerServiceImpl implements CustomerService {
         }
         customerRestClient.updateCustomer(customer);
     }
+
+    @Override
+    public Boolean checkExistingCustomerByNumber(String number) {
+
+        return customerRestClient.checkExistingCustomer(number);
+    }
 }

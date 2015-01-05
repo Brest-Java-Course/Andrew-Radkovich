@@ -138,6 +138,16 @@ public class CustomerRestClientTest {
         customerRestClient.getAllCustomers();
     }
 
+    @Test
+    public void checkExistingCustomerRestTest() {
+
+        server.expect(requestTo(HOST + CUSTOMER_REST_ROOT + "/check/AB1"))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess(Boolean.TRUE.toString(), MediaType.APPLICATION_JSON));
+
+        customerRestClient.checkExistingCustomer("AB1");
+    }
+
     public static class CustomerDataFixture {
 
         public static Customer getExistingCustomer(Long id) {

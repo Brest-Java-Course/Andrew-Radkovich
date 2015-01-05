@@ -76,4 +76,12 @@ public class CustomerRestController {
         customerService.removeCustomer(id);
         return new ResponseEntity("deleted: " + id, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/check/{number}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Boolean> checkExistingCustomer(@PathVariable String number) {
+
+        Boolean exists = customerService.checkExistingCustomerByNumber(number);
+        return new ResponseEntity<Boolean>(exists, HttpStatus.OK);
+    }
 }

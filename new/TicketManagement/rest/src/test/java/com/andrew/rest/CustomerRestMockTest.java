@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -152,6 +153,30 @@ public class CustomerRestMockTest {
                 .andExpect(status().isOk());
 
         verify(customerService).updateCustomer(any(Customer.class));
+    }
+
+    @Test
+    public void checkExistingCustomer() throws Exception {
+
+        when(customerService.checkExistingCustomerByNumber(anyString())).thenReturn(Boolean.TRUE);
+
+        mockMvc.perform(get("/rest/customer/check/AB1"))
+                .andDo(print())
+                .andExpect(content().string(Boolean.TRUE.toString()))
+                .andExpect(status().isOk());
+
+        verify(customerService).checkExistingCustomerByNumber(anyString());
+    }
+
+    @Test
+    public void checkNotExistingCustomer() throws Exception {
+
+        when(customerService.checkExistingCustomerByNumber(anyString())).thenReturn(Boolean.FALSE);
+
+        mockMvc.perform(get("/rest/customer/check/AB1"))
+                .andExpect(content().string(Boolean.FALSE.toString()))
+                .andExpect(status().isOk());
+        verify(customerService).checkExistingCustomerByNumber(anyString());
     }
 
     public static class CustomerDataFixture {

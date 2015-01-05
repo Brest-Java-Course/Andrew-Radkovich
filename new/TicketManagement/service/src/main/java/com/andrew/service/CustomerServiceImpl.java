@@ -111,4 +111,15 @@ public class CustomerServiceImpl implements CustomerService {
         }
         customerDao.updateCustomer(customer);
     }
+
+    @Override
+    public Boolean checkExistingCustomerByNumber(String number) {
+
+        try {
+            customerDao.getCustomerByNumber(number);
+            return Boolean.TRUE;
+        } catch (EmptyResultDataAccessException e) {
+            return Boolean.FALSE;
+        }
+    }
 }

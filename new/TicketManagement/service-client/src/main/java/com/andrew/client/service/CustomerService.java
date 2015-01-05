@@ -15,4 +15,5 @@ public interface CustomerService {
     public Customer getCustomerById(Long customerId);
     public Customer getCustomerByNumber(String number);
     public void updateCustomer(Customer customer);
+    public Boolean checkExistingCustomerByNumber(String number);
 }

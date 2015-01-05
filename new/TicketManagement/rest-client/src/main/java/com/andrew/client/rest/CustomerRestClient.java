@@ -74,4 +74,10 @@ public class CustomerRestClient {
         LOGGER.debug("REST CLIENT: remove customer with id = {}", id);
         restTemplate.delete(host + CUSTOMER_REST_ROOT + "/remove/" + id);
     }
+
+    public Boolean checkExistingCustomer(String number) {
+
+        LOGGER.debug("REST CLIENT: check existing customer with personal number = {}", number);
+        return restTemplate.getForObject(host + CUSTOMER_REST_ROOT + "/check/" + number, Boolean.class);
+    }
 }
