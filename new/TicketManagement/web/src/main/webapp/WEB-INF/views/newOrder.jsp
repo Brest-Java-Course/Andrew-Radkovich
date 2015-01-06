@@ -9,8 +9,8 @@
         <a href=".">to main page</a></br></br>
         <form action="filterByDateAndPid" method="GET" onsubmit="return checkForm(this);">
 	    <label>PID: <input type="text" name="pid"></label>
-	    <p><label>First Date: <input type="text" size="12" pattern="^\d+$|\d{4}-\d{1,2}-\d{1,2}" placeholder="yyyy-mm-dd" name="dateLow"></label></p>
-	    <p><label>Last Date: <input type="text" size="12" pattern="^\d+$|\d{4}-\d{1,2}-\d{1,2}"  placeholder="yyyy-mm-dd" name="dateHigh"></label></p>
+	    <p><label>First Date: <input type="text" size="12" pattern="^\d+$|\d{4}-\d{1,2}-\d{1,2}" placeholder="yyyy-mm-dd" name="dateFirst"></label></p>
+	    <p><label>Last Date: <input type="text" size="12" pattern="^\d+$|\d{4}-\d{1,2}-\d{1,2}"  placeholder="yyyy-mm-dd" name="dateLast"></label></p>
 	    <p><input type="submit"></p>
         </form>
         <form action="placeOrder" method="GET" onsubmit="return isValuesChecked(this);">

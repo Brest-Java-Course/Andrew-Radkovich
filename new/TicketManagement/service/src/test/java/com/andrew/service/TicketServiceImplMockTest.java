@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -21,6 +22,7 @@ import static com.andrew.service.TicketDataFixture.getAllTickets;
 import static com.andrew.service.TicketDataFixture.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 
 /**
@@ -95,8 +97,10 @@ public class TicketServiceImplMockTest {
     @Test(expected = InvalidDateException.class)
     public void getNotTakenTicketsBetweenDatesThrowsException() {
 
-        when(ticketDao.selectNotTakenBetweenDates(any(Date.class), any(Date.class)))
-                .thenThrow(new InvalidDateException("Error parsing dates: ", "some dates"));
+        List<Ticket> expectedTickets = selectTicketsWithSameDate(Date.valueOf("2014-3-1"));
+        when(ticketDao.selectNotTakenBetweenDates(any(Date.class), any(Date.class))).thenThrow(new InvalidDateException("Error parsing dates: ", "some dates"));
+        //doThrow(new InvalidDateException());
+        //when(ticketDao.selectNotTakenBetweenDates(any(Date.class), any(Date.class))).thenReturn(expectedTickets);
 
         List<Ticket> notTakenTicketsOfBetweenDates = ticketService.selectNotTakenBetweenDates("2014-3-1", "2014-9-121");
 
@@ -111,5 +115,29 @@ public class TicketServiceImplMockTest {
         ticketService.updateTicketsWhenCustomerRemoved(any(Long.class));
 
         verify(ticketDao).updateTicketsWhenCustomerRemoved(any(Long.class));
+    }
+
+    @Test
+    public void checkTicketExistenceValidDateMockTest() {
+
+        when(ticketDao.checkTicketExistence(Date.valueOf("2014-1-1"), "title", 1L)).thenReturn(Boolean.TRUE);
+
+        Boolean exists = ticketService.checkTicketExistence("2014-1-1", "title", 1L);
+
+        verify(ticketDao).checkTicketExistence(Date.valueOf("2014-1-1"), "title", 1L);
+
+        assertEquals(Boolean.TRUE, exists);
+    }
+
+    @Test
+    public void checkTicketNonexistenceValidDateTest() {
+
+        when(ticketDao.checkTicketExistence(Date.valueOf("2014-1-1"), "title", 1L)).thenThrow(new EmptyResultDataAccessException(1));
+
+        Boolean exists = ticketService.checkTicketExistence("2014-1-1", "title", 1L);
+
+        verify(ticketDao).checkTicketExistence(Date.valueOf("2014-1-1"), "title", 1L);
+
+        assertEquals(Boolean.FALSE, exists);
     }
 }

@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -183,6 +184,21 @@ public class TicketDaoImplTest {
         ticketDao.updateTicketsWhenCustomerRemoved(4L);
         int sizeAfter = ticketDao.selectNotTaken().size();
         assertEquals(sizeBefore + customerTicketsSize, sizeAfter);
+    }
+
+    @Test
+    public void checkTicketExistenceTest() {
+
+        Boolean exists = ticketDao.checkTicketExistence(Date.valueOf("2014-3-1"), "interstellar", 1L);
+        assertEquals(Boolean.TRUE, exists);
+    }
+
+    @Test(expected = EmptyResultDataAccessException.class)
+    public void checkTicketNonexistenceText() {
+
+
+        Boolean exists = ticketDao.checkTicketExistence(Date.valueOf("2014-3-1"), "random title", 1L);
+        assertEquals(Boolean.FALSE, exists);
     }
 
     @Test

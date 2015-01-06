@@ -9,6 +9,7 @@ import com.andrew.ticket.Ticket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -21,6 +22,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -77,6 +80,8 @@ public class TicketDaoImpl implements TicketDao {
     public String updateSetTakenFalseTicketSql;
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${update_if_customer_was_removed_path}')).inputStream)}")
     public String updateTicketsIfCustomerWasRemovedSql;
+    @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${check_ticket_existence_path}')).inputStream)}")
+    public String checkTicketExistenceSql;
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -199,6 +204,29 @@ public class TicketDaoImpl implements TicketDao {
         Map<String, Long> parameter = new HashMap<String, Long>(1);
         parameter.put(CUSTOMER_ID, customerId);
         namedParameterJdbcTemplate.update(updateTicketsIfCustomerWasRemovedSql, parameter);
+    }
+
+    @Override
+    public Boolean checkTicketExistence(Date date, String title, Long location) {
+
+        LOGGER.debug("DAO: check ticket existence");
+        Map<String, Object> parameters = new HashMap<String, Object>(3);
+        parameters.put(DATE, date);
+        parameters.put(TITLE, title);
+        parameters.put(LOCATION, location);
+        Long id = namedParameterJdbcTemplate.queryForObject(checkTicketExistenceSql, parameters, new RowMapper<Long>() {
+            @Override
+            public Long mapRow(ResultSet resultSet, int i) throws SQLException {
+                return resultSet.getLong(TICKET_ID);
+            }
+        });
+        LOGGER.debug("ticketId = {}", id);
+        if( null == id ) {
+            return Boolean.FALSE;
+        }
+        else {
+            return Boolean.TRUE;
+        }
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.andrew.service;
+package com.andrew.client.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

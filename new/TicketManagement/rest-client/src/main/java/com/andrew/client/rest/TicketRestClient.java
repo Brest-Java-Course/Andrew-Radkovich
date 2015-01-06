@@ -7,6 +7,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,5 +78,10 @@ public class TicketRestClient {
     public void updateTicketSetTakenTrue(Long ticketId, Long customerId) {
 
         restTemplate.put(host + TICKET_ROOT_PATH + "update/setTakenTrue/" + ticketId + "/" + customerId, ticketId, customerId);
+    }
+
+    public Boolean checkTicketExistence(Date date, String title, Long location) {
+
+        return restTemplate.getForObject(host + TICKET_ROOT_PATH + "check/" + date + "/" + title + "/" + location, Boolean.class);
     }
 }

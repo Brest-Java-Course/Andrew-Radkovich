@@ -114,6 +114,26 @@ public class TicketRestClientTest {
         ticketRestClient.updateTicketsWhenCustomerRemoved(1L);
     }
 
+    @Test
+    public void checkTicketExistenceRestTest() {
+
+        server.expect(requestTo(HOST + TICKET_ROOT_PATH + "check/2014-03-01/title/1"))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess(Boolean.TRUE.toString(), MediaType.APPLICATION_JSON));
+
+        ticketRestClient.checkTicketExistence(Date.valueOf("2014-3-1"), "title", 1L);
+    }
+
+    @Test
+    public void checkTicketNonexistenceRestTest() {
+
+        server.expect(requestTo(HOST + TICKET_ROOT_PATH + "check/2014-03-01/random%20title/1"))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess(Boolean.FALSE.toString(), MediaType.APPLICATION_JSON));
+
+        ticketRestClient.checkTicketExistence(Date.valueOf("2014-3-1"), "random title", 1L);
+    }
+
     public static class TicketDataFixture {
 
         public static Ticket getExistingTakenTicket(Long id) {

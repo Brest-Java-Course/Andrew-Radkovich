@@ -7,10 +7,10 @@ import com.andrew.ticket.Ticket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -115,5 +115,12 @@ public class CustomerController {
         }
         LOGGER.debug("CONTROLLER: new customer id = {}", id);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "checkCustomer")
+    @ResponseBody
+    public ResponseEntity<Boolean> checkCustomerExistence(@RequestParam("pid") String number) {
+
+        return new ResponseEntity<Boolean>(customerService.checkExistingCustomerByNumber(number), HttpStatus.OK);
     }
 }

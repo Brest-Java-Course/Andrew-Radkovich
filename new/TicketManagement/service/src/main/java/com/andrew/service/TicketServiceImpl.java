@@ -8,6 +8,7 @@ import com.andrew.ticket.Ticket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -146,12 +147,13 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public void updateSetTakenTrue(Long ticketId, Long customerId) {
 
-        LOGGER.debug("SERVICE: update ticket, set taken status, ticket_id={}", ticketId);
+        LOGGER.debug("SERVICE: update ticket, set taken true, ticket_id={}", ticketId);
         ticketDao.updateSetTakenTrue(ticketId, customerId);
     }
 
     @Override
     public void updateTicketsWhenCustomerRemoved(Long customerId) {
+
         LOGGER.debug("SERVICE: update tickets when customer removed");
         ticketDao.updateTicketsWhenCustomerRemoved(customerId);
     }
@@ -161,5 +163,23 @@ public class TicketServiceImpl implements TicketService {
 
         LOGGER.debug("SERVICE: select ticket by id={}", ticketId);
         return ticketDao.selectTicketById(ticketId);
+    }
+
+    @Override
+    public Boolean checkTicketExistence(String date, String title, Long location) throws InvalidDateException{
+
+        LOGGER.debug("SERVICE: check ticket existence");
+        if(isValidDate(date)) {
+            try {
+                ticketDao.checkTicketExistence(Date.valueOf(date), title, location);
+                return Boolean.TRUE;
+            } catch (EmptyResultDataAccessException e) {
+                e.printStackTrace();
+                return Boolean.FALSE;
+            }
+        }
+        else {
+            throw new InvalidDateException("error: parsing date", date);
+        }
     }
 }

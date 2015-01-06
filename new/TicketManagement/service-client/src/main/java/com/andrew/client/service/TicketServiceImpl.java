@@ -3,6 +3,7 @@ package com.andrew.client.service;
 import com.andrew.TotalCost.TotalCustomerCost;
 import com.andrew.client.rest.CustomerRestClient;
 import com.andrew.client.rest.TicketRestClient;
+import com.andrew.client.service.exception.InvalidDateException;
 import com.andrew.customer.Customer;
 import com.andrew.ticket.Ticket;
 import org.apache.logging.log4j.LogManager;
@@ -13,6 +14,7 @@ import org.springframework.util.Assert;
 import java.sql.Date;
 import java.util.List;
 
+import static com.andrew.client.service.DateValidator.isValidDate;
 import static java.util.Arrays.asList;
 
 /**
@@ -82,5 +84,17 @@ public class TicketServiceImpl implements TicketService {
     public void updateSetTakenTrue(Long ticketId, Long customerId) {
 
         ticketRestClient.updateTicketSetTakenTrue(ticketId, customerId);
+    }
+
+    @Override
+    public Boolean checkTicketExistence(String dateStr, String title, Long location) {
+
+        LOGGER.debug("SERVICE: check ticket existence");
+        if(isValidDate(dateStr)) {
+            return ticketRestClient.checkTicketExistence(Date.valueOf(dateStr), title, location);
+        }
+        else {
+            throw new InvalidDateException("error: parsing date", dateStr);
+        }
     }
 }

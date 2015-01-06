@@ -147,6 +147,20 @@ public class TicketRestMockTest {
         verify(ticketService).updateTicketsWhenCustomerRemoved(anyLong());
     }
 
+    @Test
+    public void checkTicketsExistenceMockTest() throws Exception {
+
+        when(ticketService.checkTicketExistence("2000-1-1", "title", 1L)).thenReturn(Boolean.FALSE);
+        when(ticketService.checkTicketExistence("2000-1-1", "title", 2L)).thenReturn(Boolean.TRUE);
+
+        mockMvc.perform(get("/rest/ticket/check/2000-1-1/title/2").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(Boolean.TRUE.toString()));
+
+        verify(ticketService).checkTicketExistence("2000-1-1", "title", 1L);
+        verify(ticketService).checkTicketExistence("2000-1-1", "title", 2L);
+    }
+
     public static class TicketDataFixture {
 
         public static Ticket getExistingTakenTicket(Long id) {

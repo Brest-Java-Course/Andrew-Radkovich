@@ -27,4 +27,5 @@ public interface TicketService {
     public void updateSetTakenTrue(Long ticketId, Long customerId);
     public void updateTicketsWhenCustomerRemoved(Long customerId);
     public Ticket selectTicketById(Long ticketId);
+    public Boolean checkTicketExistence(String date, String title, Long location);
 }

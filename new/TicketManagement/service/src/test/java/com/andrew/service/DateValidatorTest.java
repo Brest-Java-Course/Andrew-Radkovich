@@ -1,10 +1,10 @@
-package com.andrew.web;
+package com.andrew.service;
 
 import org.junit.Test;
 
 import java.sql.Date;
 
-import static com.andrew.web.DateValidator.isValidDate;
+import static com.andrew.service.DateValidator.isValidDate;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

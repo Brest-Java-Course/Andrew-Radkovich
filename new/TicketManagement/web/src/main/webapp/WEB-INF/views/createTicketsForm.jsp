@@ -10,11 +10,11 @@
             <table>
                 <tr>
                     <td>Title: </td>
-                    <td><input type="text"  required name="title"></td>
+                    <td><input type="text"  required name="title" id="title"></td>
                 </tr>
                 <tr>
                     <td>Date: </td>
-                    <td><input type="text" required pattern="\d{4}-\d{1,2}-\d{1,2}"  placeholder="yyyy-mm-dd" name="date"></td></td>
+                    <td><input type="text" required pattern="\d{4}-\d{1,2}-\d{1,2}"  placeholder="yyyy-mm-dd" name="date" id="date"></td></td>
                 </tr>
                 <tr>
                     <td>Cost: </td>
@@ -22,16 +22,17 @@
                 </tr>
                 <tr>
                     <td>Locations: </td>
-                    <td><input type="text"  required name="locations"></td>
+                    <td><input type="text"  required name="locations" id="location"></td>
                 </tr>
             </table>
             <input type="submit" name="add">
         </form>
-        <script>
+    <script>
         function isValidDate(dateToValidate) {
 
             var re = /(\d{4})-(\d{1,2})-(\d{1,2})/;
             var tokens;
+            console.log(dateToValidate);
             if(dateToValidate != '') {
                 if(tokens = dateToValidate.match(re)) {
 
@@ -72,10 +73,54 @@
             }
             return true;
         }
+        </script>
+    <script>
+        function checkTicketAvailability() {
+
+            var date = $('#date').val();
+            var title = $('#title').val();
+            var location = $('#location').val();
+
+            var xmlHttp = null;
+            var exists;
+
+            xmlHttp = new XMLHttpRequest();
+
+            var url = "http://localhost:8080/web-1.0-SNAPSHOT/rest/ticket/check/" + date + "/" + title + "/" + location;
+            console.log(url);
+            xmlHttp.open("GET", url , false);
+            xmlHttp.onreadystatechange = function () {
+
+                if (xmlHttp.readyState == 4) {
+                    if (xmlHttp.status == 200) {
+                        var resp = xmlHttp.responseText;
+                        if (resp === 'false') {
+                            exists = true;
+                            console.log('false stmt: ' + exists);
+                        }
+                        else if (resp === 'true') {
+                            exists = false;
+                            alert("One of tickets already exists");
+                            console.log('true stmt: ' + exists);
+                        }
+                    }
+                }
+            };
+            xmlHttp.send();
+            if(exists === false) return false;
+            else return true;
+        }
+    </script>
+    <script>
         function checkForm(form) {
 
-            return isValidDate(form.date.value);
+            if( !isValidDate(form.date.value) ) {
+                return false;
+            }
+            else {
+                return checkTicketAvailability();
+            }
         }
-        </script>
+    </script>
     </body>
 </html>

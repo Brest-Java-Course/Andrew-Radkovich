@@ -28,4 +28,5 @@ public interface TicketDao {
     public Ticket selectTicketById(Long ticketId);
     public void updateTicketSetTakenFalse(Long ticketId);
     public void updateTicketsWhenCustomerRemoved(Long customerId);
+    public Boolean checkTicketExistence(Date date, String title, Long location);
 }

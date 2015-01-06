@@ -117,4 +117,26 @@ public class TicketRestController {
         ticketService.updateSetTakenTrue(ticketId, customerId);
         return new ResponseEntity("sold to customer({})" + customerId, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/check/{date}/{title}/{location}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity checkTicketExistence(@PathVariable String date,
+                                                        @PathVariable String title,
+                                                        @PathVariable Long location) {
+
+        Boolean exists = null;
+        try {
+            for(int i = 1; i <= location; i++) {
+
+                exists = ticketService.checkTicketExistence(date, title, Long.valueOf(i));
+                if( exists ) {
+                    return new ResponseEntity(exists, HttpStatus.OK);
+                }
+            }
+        } catch (InvalidDateException e) {
+            e.printStackTrace();
+            return new ResponseEntity("invalid date", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(exists, HttpStatus.OK);
+    }
 }
