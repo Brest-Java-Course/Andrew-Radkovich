@@ -4,13 +4,18 @@
 <%@ page isELIgnored="false"%>
 <!DOCTYPE html>
 <html lang="en">
-    <body>
+ <head>
+  <meta charset="utf-8">
+  <title>NEW ORDER</title>
+<link rel="stylesheet" type="text/css" href="resources/css/background-gradient.css">
+ </head>
+    <body class="gradient">
         <h2>Order page</h2>
         <a href=".">to main page</a></br></br>
         <form action="filterByDateAndPid" method="GET" onsubmit="return checkForm(this);">
 	    <label>PID: <input type="text" name="pid"></label>
-	    <p><label>First Date: <input type="text" size="12" pattern="^\d+$|\d{4}-\d{1,2}-\d{1,2}" placeholder="yyyy-mm-dd" name="dateLow"></label></p>
-	    <p><label>Last Date: <input type="text" size="12" pattern="^\d+$|\d{4}-\d{1,2}-\d{1,2}"  placeholder="yyyy-mm-dd" name="dateHigh"></label></p>
+	    <p><label>First Date: <input type="text" size="12" pattern="^\d+$|\d{4}-\d{1,2}-\d{1,2}" placeholder="yyyy-mm-dd" name="dateFirst"></label></p>
+	    <p><label>Last Date: <input type="text" size="12" pattern="^\d+$|\d{4}-\d{1,2}-\d{1,2}"  placeholder="yyyy-mm-dd" name="dateLast"></label></p>
 	    <p><input type="submit"></p>
         </form>
         <form action="placeOrder" method="GET" onsubmit="return isValuesChecked(this);">
@@ -76,95 +81,12 @@
 		    </c:when>
              </c:choose>
         </form>
+        <script src="resources/js/checkRadioAndBoxChosen.js"></script>
+        <script src="resources/js/dateValidation.js"></script>
         <script>
-        function isValuesChecked(form) {
-
-                var customerRadio = form.customerId;
-                var ticketCheckbox = form.ticketIdList;
-                var customerRadioChecked = false;
-                var ticketCheckboxChecked = false;
-
-                if(customerRadio.checked) {
-                customerRadioChecked = true;
-                }
-                else {
-                for(var i = 0; i < customerRadio.length; i++) {
-                    if(customerRadio[i].checked) {
-                        customerRadioChecked = true;
-                        break;
-                    }
-                }
-                }
-                if(!customerRadioChecked) {
-                alert("Choose customer!");
-                return false;
-                }
-
-                if(ticketCheckbox.checked) {
-                ticketCheckboxChecked = true;
-                }
-                else {
-                for(var i = 0; i < ticketCheckbox.length; i++) {
-                    if(ticketCheckbox[i].checked) {
-                        ticketCheckboxChecked = true;
-                        break;
-                    }
-                }
-                }
-                if(!ticketCheckboxChecked) {
-                alert("Choose at least one ticket!");
-                return false;
-                }
-
-                return true;
-            }
-            function isValidDate(dateToValidate) {
-
-                var re = /(\d{4})-(\d{1,2})-(\d{1,2})/;
-                var tokens;
-                if(dateToValidate != '') {
-                    if(tokens = dateToValidate.match(re)) {
-
-                        var day = tokens[3];
-                        var month = tokens[2];
-                        var year = tokens[1];
-
-                        if(day < 1 || day > 31) {
-                            alert("Invalid value for day: " + day);
-                            return false;
-                        }
-                        if(month < 1 || month > 12) {
-                            alert("Invalid value for month: " + month);
-                            return false;
-                        }
-                        if(year < 1902 || year > (new Date()).getFullYear()) {
-                            alert("Invalid value for year: " + year + " - must be between 1902 and " + (new Date()).getFullYear());
-                            return false;
-                        }
-                        if(month == 2) {
-                            if(year % 4 == 0) {
-                                if(day > 29) {
-                                    alert("Invalid day for year: " + year + " and february. Must be less or equals than 29");
-                                    return false;
-                                }
-                            }
-                            else {
-                                if(day > 28) {
-                                    alert("Invalid day for year: " + year + " and february. Must be less or equals than 28");
-                                    return false;
-                                }
-                            }
-                        }
-                    } else {
-                        alert("Invalid date format: " + dateToValidate);
-                        return false;
-                    }
-                }
-                return true;
-            }
             function checkForm(form) {
 
-                if("" == form.dateLow.value || "" == form.dateLast.value) {
+                if("" == form.dateFirst.value || "" == form.dateLast.value) {
                     form.dateFirst.value = form.dateLast.value = "";
                     return true;
                 }

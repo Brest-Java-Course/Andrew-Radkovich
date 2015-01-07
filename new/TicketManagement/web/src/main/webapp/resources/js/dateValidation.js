@@ -42,11 +42,3 @@ function isValidDate(dateToValidate) {
     }
     return true;
 }
-function checkForm(form) {
-
-    if("" == form.dateFirst.value || "" == form.dateLast.value) {
-        form.dateFirst.value = form.dateLast.value = "";
-        return true;
-    }
-    return isValidDate(form.dateFirst.value) && isValidDate(form.dateLast.value);
-}

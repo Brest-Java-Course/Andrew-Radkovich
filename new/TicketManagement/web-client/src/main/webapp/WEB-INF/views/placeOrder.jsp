@@ -5,7 +5,12 @@
 <%@ page isELIgnored="false"%>
 <!DOCTYPE html>
 <html lang="en">
-    <body>
+ <head>
+  <meta charset="utf-8">
+  <title>PLACE ORDER</title>
+<link rel="stylesheet" type="text/css" href="resources/css/background-gradient.css">
+ </head>
+    <body class="gradient">
         <h2>Customer info</h2>
         <a href=".">to main page</a><br>
         <ul>

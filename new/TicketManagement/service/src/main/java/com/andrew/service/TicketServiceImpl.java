@@ -78,7 +78,7 @@ public class TicketServiceImpl implements TicketService {
         Date dateLow = null;
         Date dateHigh = null;
 
-        if(isValidDate(dateLowStr) && isValidDate(dateHighStr)) {
+        if (isValidDate(dateLowStr) && isValidDate(dateHighStr)) {
             dateLow = Date.valueOf(dateLowStr);
             dateHigh = Date.valueOf(dateHighStr);
 
@@ -88,9 +88,8 @@ public class TicketServiceImpl implements TicketService {
                 dateLow = dateHigh;
                 dateHigh = tempDate;
             }
-        }
-        else {
-            throw new InvalidDateException("error: parsing dates",dateHighStr + dateLowStr);
+        } else {
+            throw new InvalidDateException("error: parsing dates", dateHighStr + dateLowStr);
         }
         return ticketDao.selectNotTakenBetweenDates(dateLow, dateHigh);
     }
@@ -166,20 +165,24 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Boolean checkTicketExistence(String date, String title, Long location) throws InvalidDateException{
+    public Boolean checkTicketExistence(String date, String title, Long location) throws InvalidDateException {
 
         LOGGER.debug("SERVICE: check ticket existence");
-        if(isValidDate(date)) {
-            try {
-                ticketDao.checkTicketExistence(Date.valueOf(date), title, location);
-                return Boolean.TRUE;
-            } catch (EmptyResultDataAccessException e) {
-                e.printStackTrace();
-                return Boolean.FALSE;
+        Boolean exists = null;
+        if (isValidDate(date)) {
+            for (int i = 1; i <= location; i++) {
+
+                try {
+                    ticketDao.checkTicketExistence(Date.valueOf(date), title, Long.valueOf(i));
+                    return Boolean.TRUE;
+                } catch (EmptyResultDataAccessException e) {
+                    e.printStackTrace();
+                    exists = Boolean.FALSE;
+                }
             }
-        }
-        else {
+        } else {
             throw new InvalidDateException("error: parsing date", date);
         }
+        return exists;
     }
 }

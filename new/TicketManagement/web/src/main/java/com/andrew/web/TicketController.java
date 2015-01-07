@@ -48,8 +48,11 @@ public class TicketController {
                                       @RequestParam("cost")Integer cost) {
 
         if(!isValidDate(dateStr)) {
-
             return new ModelAndView("error/invalidDate");
+        }
+
+        if(ticketService.checkTicketExistence(dateStr, title, locations) == true) {
+            return new ModelAndView("error/addExistingTicket");
         }
 
         ModelAndView modelAndView = new ModelAndView("redirect:/home");

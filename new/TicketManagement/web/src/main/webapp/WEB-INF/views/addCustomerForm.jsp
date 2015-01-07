@@ -4,7 +4,12 @@
 <%@ page isELIgnored="false"%>
 <!DOCTYPE html>
 <html lang="en">
-    <body>
+ <head>
+  <meta charset="utf-8">
+  <title>CREATE CUSTOMER</title>
+<link rel="stylesheet" type="text/css" href="resources/css/background-gradient.css">
+ </head>
+    <body class="gradient">
         <script src="resources/js/jquery-1.11.1.js"></script>
         <a href=".">to main page</a><br>
         <form action="addCustomer" method="POST" onsubmit="return checkCustomerAvailability();">

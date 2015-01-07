@@ -126,13 +126,7 @@ public class TicketRestController {
 
         Boolean exists = null;
         try {
-            for(int i = 1; i <= location; i++) {
-
-                exists = ticketService.checkTicketExistence(date, title, Long.valueOf(i));
-                if( exists ) {
-                    return new ResponseEntity(exists, HttpStatus.OK);
-                }
-            }
+            exists = ticketService.checkTicketExistence(date, title, location);
         } catch (InvalidDateException e) {
             e.printStackTrace();
             return new ResponseEntity("invalid date", HttpStatus.BAD_REQUEST);

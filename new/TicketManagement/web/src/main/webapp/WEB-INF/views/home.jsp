@@ -4,7 +4,12 @@
 <%@ page isELIgnored="false"%>
 <!DOCTYPE html>
 <html lang="en">
-<body>
+ <head>
+  <meta charset="utf-8">
+  <title>HOME</title>
+<link rel="stylesheet" type="text/css" href="resources/css/background-gradient.css">
+ </head>
+<body class="gradient">
     <h2>Main page</h2>
 <!--    <form action="searchByPid" method="GET">
         <label><input type="text" name="pid"></label>
