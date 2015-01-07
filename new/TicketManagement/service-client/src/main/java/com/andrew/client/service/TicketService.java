@@ -19,4 +19,5 @@ public interface TicketService {
     public Integer getTicketsSumOfCustomer(Long customerId);
     public void updateSetTakenTrue(Long ticketId, Long customerId);
     public Boolean checkTicketExistence(String date, String title, Long location);
+    public Long countTicketsOfCustomer(Long customerId);
 }

@@ -159,6 +159,18 @@ public class TicketRestMockTest {
         verify(ticketService).checkTicketExistence("2000-1-1", "title", 2L);
     }
 
+    @Test
+    public void countTicketsOfCustomerRestTest() throws Exception {
+
+        when(ticketService.countTicketsOfCustomer(1L)).thenReturn(2L);
+
+        mockMvc.perform(get("/rest/ticket/count/1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("2"));
+
+        verify(ticketService).countTicketsOfCustomer(1L);
+    }
+
     public static class TicketDataFixture {
 
         public static Ticket getExistingTakenTicket(Long id) {

@@ -84,4 +84,9 @@ public class TicketRestClient {
 
         return restTemplate.getForObject(host + TICKET_ROOT_PATH + "check/" + date + "/" + title + "/" + location, Boolean.class);
     }
+
+    public Long countTicketsOfCustomer(Long customerId) {
+
+        return restTemplate.getForObject(host + TICKET_ROOT_PATH + "count/" + customerId, Long.class);
+    }
 }

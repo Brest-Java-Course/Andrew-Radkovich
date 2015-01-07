@@ -97,4 +97,10 @@ public class TicketServiceImpl implements TicketService {
             throw new InvalidDateException("error: parsing date", dateStr);
         }
     }
+
+    @Override
+    public Long countTicketsOfCustomer(Long customerId) {
+
+        return ticketRestClient.countTicketsOfCustomer(customerId);
+    }
 }

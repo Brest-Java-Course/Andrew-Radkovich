@@ -21,7 +21,7 @@
         <form action="placeOrder" method="GET" onsubmit="return isValuesChecked(this);">
             <ul>
                 <c:choose>
-                    <c:when test="${(customers.size()) == 0}">
+                    <c:when test="${(customers.get(0)) == null}">
                         <h2>No customers found</h2>
                     </c:when>
 
@@ -31,13 +31,15 @@
                                 <td>Id</td>
                                 <td>Name</td>
                                 <td>Identification number</td>
+                                <td>Count</td>
                                 <td></td>
                             </tr>
-                            <c:forEach items="${customers}" var="customer">
+                            <c:forEach items="${customers}" var="customer" varStatus="status">
                                 <tr>
                                     <td>${customer.customerId}</td>
                                     <td>${customer.name}</td>
                                     <td>${customer.identificationNumber}</td>
+                                    <td>${counts[status.index]}</td>
                                     <td>
                                         <input type="radio" name="customerId" value="${customer.customerId}">
                                     </td>
@@ -76,7 +78,7 @@
              </c:choose>
             </ul>
             <c:choose>
-		    <c:when test="${(tickets.size() != 0) and (customers.size() != 0)}">
+		    <c:when test="${(tickets.size() != 0) and ((customers.get(0)) != null)}">
 		        <input type="submit" value="Place order">
 		    </c:when>
              </c:choose>

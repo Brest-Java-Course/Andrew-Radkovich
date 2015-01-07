@@ -82,10 +82,12 @@ public class TicketDaoImpl implements TicketDao {
     public String updateTicketsIfCustomerWasRemovedSql;
     @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${check_ticket_existence_path}')).inputStream)}")
     public String checkTicketExistenceSql;
+    @Value("#{T(org.apache.commons.io.IOUtils).toString((new org.springframework.core.io.ClassPathResource('${count_tickets_of_customer_path}')).inputStream)}")
+    public String countTicketsOfCustomerSql;
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    //@Autowired
+    //@Autowired count_tickets_of_customer_path
     //private DataSource dataSource;
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -227,6 +229,20 @@ public class TicketDaoImpl implements TicketDao {
         else {
             return Boolean.TRUE;
         }
+    }
+
+    @Override
+    public Long countTicketsOfCustomer(Long customerId) {
+
+        LOGGER.debug("DAO: count tickets of customer = {}", customerId);
+        Map<String, Long> parameter = new HashMap<String, Long>(1);
+        parameter.put(CUSTOMER_ID, customerId);
+        return namedParameterJdbcTemplate.queryForObject(countTicketsOfCustomerSql, parameter, new RowMapper<Long>() {
+            @Override
+            public Long mapRow(ResultSet resultSet, int i) throws SQLException {
+                return resultSet.getLong("num_tickets");
+            }
+        });
     }
 
     @Override

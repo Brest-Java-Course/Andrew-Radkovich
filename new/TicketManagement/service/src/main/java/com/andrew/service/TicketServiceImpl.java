@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -35,7 +36,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Long addTicket(Ticket ticket) {
 
         LOGGER.debug("SERVICE: add ticket={}", ticket);
@@ -50,6 +51,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void removeTicket(Long ticketId) {
 
         LOGGER.debug("SERVICE: remove ticket with id={}", ticketId);
@@ -137,6 +139,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateTicket(Ticket ticket) {
 
         LOGGER.debug("SERVICE: update ticket={}", ticket);
@@ -144,6 +147,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateSetTakenTrue(Long ticketId, Long customerId) {
 
         LOGGER.debug("SERVICE: update ticket, set taken true, ticket_id={}", ticketId);
@@ -151,6 +155,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateTicketsWhenCustomerRemoved(Long customerId) {
 
         LOGGER.debug("SERVICE: update tickets when customer removed");
@@ -184,5 +189,11 @@ public class TicketServiceImpl implements TicketService {
             throw new InvalidDateException("error: parsing date", date);
         }
         return exists;
+    }
+
+    @Override
+    public Long countTicketsOfCustomer(Long customerId) {
+
+        return ticketDao.countTicketsOfCustomer(customerId);
     }
 }

@@ -134,6 +134,17 @@ public class TicketRestClientTest {
         ticketRestClient.checkTicketExistence(Date.valueOf("2014-3-1"), "random title", 1L);
     }
 
+    @Test
+    public void countTicketsOfCustomerRestTest() {
+
+        server.expect(requestTo(HOST + TICKET_ROOT_PATH + "count/1"))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess(Long.valueOf(2).toString(), MediaType.APPLICATION_JSON));
+
+        Long count = ticketRestClient.countTicketsOfCustomer(1L);
+        assertEquals(count, Long.valueOf(2));
+    }
+
     public static class TicketDataFixture {
 
         public static Ticket getExistingTakenTicket(Long id) {

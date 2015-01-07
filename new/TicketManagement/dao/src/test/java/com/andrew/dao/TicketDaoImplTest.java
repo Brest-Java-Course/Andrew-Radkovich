@@ -235,4 +235,36 @@ public class TicketDaoImplTest {
         TotalCustomerCost customerCost = ticketDao.getTicketsSumOfCustomer(id);
         assertEquals((ticketCost1 + ticketCost2), customerCost.getTotalCost().longValue());
     }
+
+    @Test
+    public void countTicketsOfCustomerTest() {
+
+        Customer customer = new Customer();
+        customer.setIdentificationNumber("IN11");
+        customer.setName("Van Halen");
+
+        Long id = customerDao.addCustomer(customer);
+
+        Ticket ticket1 = new Ticket();
+        ticket1.setCustomerId(id);
+        ticket1.setCost(1000);
+        ticket1.setLocation(2);
+        ticket1.setTitle("V for Vendetta");
+        ticket1.setDate(Date.valueOf("2014-11-5"));
+        ticket1.setTaken(Boolean.TRUE);
+
+        Ticket ticket2 = new Ticket();
+        ticket2.setCustomerId(id);
+        ticket2.setCost(1000);
+        ticket2.setLocation(3);
+        ticket2.setTitle("V for Vendetta");
+        ticket2.setDate(Date.valueOf("2014-11-5"));
+        ticket2.setTaken(Boolean.TRUE);
+
+        ticketDao.addTicket(ticket1);
+        ticketDao.addTicket(ticket2);
+
+        Long count = ticketDao.countTicketsOfCustomer(id);
+        assertEquals(Long.valueOf(2), count);
+    }
 }

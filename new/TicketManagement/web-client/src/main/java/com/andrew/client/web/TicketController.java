@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import static com.andrew.client.service.DateValidator.isValidDate;
 import static java.util.Arrays.asList;
@@ -73,7 +75,13 @@ public class TicketController {
     public ModelAndView newOrder() {
 
         ModelAndView modelAndView = new ModelAndView("newOrder");
-        modelAndView.addObject("customers", customerService.getCustomers());
+        List<Customer> customers = customerService.getCustomers();
+        List<Long> counts = new LinkedList<Long>();
+        for(Customer customer : customers) {
+            counts.add(ticketService.countTicketsOfCustomer(customer.getCustomerId()));
+        }
+        modelAndView.addObject("counts", counts);
+        modelAndView.addObject("customers", customers);
         modelAndView.addObject("tickets", ticketService.selectNotTaken());
         return modelAndView;
     }
@@ -126,7 +134,14 @@ public class TicketController {
         }
         else {
             customer = customerService.getCustomerByNumber(pid);
-            view.addObject("customers", asList(customer));
+            if(null == customer ) {
+                view.addObject("customers", asList(customer));
+            }
+            else {
+                Long num = ticketService.countTicketsOfCustomer(customer.getCustomerId());
+                view.addObject("customers", asList(customer));
+                view.addObject("counts", asList(num));
+            }
         }
         return view;
     }

@@ -140,4 +140,18 @@ public class TicketServiceImplMockTest {
 
         assertEquals(Boolean.FALSE, exists);
     }
+
+    @Test
+    public void countTicketsOfCustomerTest() {
+
+        Long expectedResult = 2L;
+
+        when(ticketDao.countTicketsOfCustomer(1L)).thenReturn(expectedResult);
+
+        Long recievedResult = ticketService.countTicketsOfCustomer(1L);
+
+        verify(ticketDao).countTicketsOfCustomer(1L);
+
+        assertEquals(expectedResult, recievedResult);
+    }
 }

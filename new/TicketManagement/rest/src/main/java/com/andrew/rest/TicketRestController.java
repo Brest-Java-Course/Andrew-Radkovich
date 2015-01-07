@@ -121,8 +121,8 @@ public class TicketRestController {
     @RequestMapping(value = "/check/{date}/{title}/{location}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity checkTicketExistence(@PathVariable String date,
-                                                        @PathVariable String title,
-                                                        @PathVariable Long location) {
+                                               @PathVariable String title,
+                                               @PathVariable Long location) {
 
         Boolean exists = null;
         try {
@@ -132,5 +132,13 @@ public class TicketRestController {
             return new ResponseEntity("invalid date", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(exists, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/count/{customerId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Long> countTicketsOfCustomer(@PathVariable Long customerId) {
+
+        Long count = ticketService.countTicketsOfCustomer(customerId);
+        return new ResponseEntity<Long>(count, HttpStatus.OK);
     }
 }
